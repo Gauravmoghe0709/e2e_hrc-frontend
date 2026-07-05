@@ -66,7 +66,7 @@ function Sectors() {
   return (
     <section className="bg-[#f4f7fb]">
       <div className="mx-auto max-w-375 px-6 py-20 sm:px-10 lg:px-14">
-        <span className="rounded-full bg-lime-100 px-4 py-2 text-sm font-bold text-green-700">
+        <span className="rounded-full bg-[#C6D86D] px-4 py-2 text-sm font-bold text-blue-700">
           Industries We Serve
         </span>
 

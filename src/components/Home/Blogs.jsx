@@ -1,8 +1,20 @@
 function Blogs() {
   const blogs = [
-    "Talent Acquisition Strategies That Actually Work",
-    "Future Workforce Planning: Building Teams for Tomorrow",
-    "Building High Performing Teams From Day One",
+    {
+      title: "Talent Acquisition Strategies That Actually Work",
+      image: "/src/assets/images/blog-1.png",
+      readTime: "5 min read · May 2025",
+    },
+    {
+      title: "Future Workforce Planning: Building Teams for Tomorrow",
+      image: "/src/assets/images/blog-2.png",
+      readTime: "6 min read · May 2025",
+    },
+    {
+      title: "Building High Performing Teams From Day One",
+      image: "/src/assets/images/blog-3.png",
+      readTime: "4 min read · May 2025",
+    },
   ];
 
   return (
@@ -24,7 +36,14 @@ function Blogs() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">
-        <div className="bg-slate-800 text-white rounded-3xl p-8 min-h-[420px] flex flex-col justify-end">
+        <div className="bg-slate-800 text-white rounded-3xl p-8 min-h-[420px] flex flex-col justify-end overflow-hidden relative">
+          <img
+            src="https://images.unsplash.com/photo-1526129318478-62ed807ebdf9?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Featured blog"
+            className="absolute inset-0 h-full w-full object-cover object-center opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-800/70 to-transparent" />
+          <div className="relative z-10">
           <span className="bg-blue-600 px-3 py-1 rounded-full text-sm w-fit">
             Hiring Trends
           </span>
@@ -38,9 +57,10 @@ function Blogs() {
             recruitment landscape is shifting rapidly.
           </p>
 
-          <button className="text-lime-300 mt-6 text-left">
-            Read More →
-          </button>
+            <button className="text-lime-300 mt-6 text-left">
+              Read More →
+            </button>
+          </div>
         </div>
 
         <div className="space-y-6">
@@ -49,7 +69,11 @@ function Blogs() {
               key={index}
               className="bg-gray-50 rounded-3xl p-6 flex gap-5 items-center"
             >
-              <div className="w-32 h-28 bg-gray-300 rounded-2xl"></div>
+              <img
+                src="https://images.unsplash.com/photo-1733348137468-90b917d2ebf1?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt={blog.title}
+                className="w-32 h-32 rounded-2xl object-center"
+              />
 
               <div>
                 <span className="bg-lime-100 text-green-700 px-3 py-1 rounded-full text-sm">
@@ -57,12 +81,10 @@ function Blogs() {
                 </span>
 
                 <h3 className="text-xl font-bold text-blue-700 mt-3">
-                  {blog}
+                  {blog.title}
                 </h3>
 
-                <p className="text-gray-500 text-sm mt-2">
-                  5 min read · May 2025
-                </p>
+                <p className="text-gray-500 text-sm mt-2">{blog.readTime}</p>
               </div>
             </div>
           ))}
