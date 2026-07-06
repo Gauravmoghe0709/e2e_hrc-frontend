@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import AnnouncementBar from "./AnnouncementBar";
 import logo from "../assets/images/logo.png";
 
 function Navbar() {
@@ -10,8 +11,8 @@ function Navbar() {
     { name: "Home", path: "/" },
     { name: "About Us", path: "/about" },
     { name: "Employer", path: "/employer" },
-    { name: "Employee", path: "/employee" },
     { name: "Workforce Solutions", path: "/workforce-solutions" },
+    { name: "Employee", path: "/employee" },
     { name: "Become a Partner", path: "/become-a-partner" },
     { name: "Blogs", path: "/blogs" },
     { name: "Contact Us", path: "/contact-us" },
@@ -24,10 +25,7 @@ function Navbar() {
 
   return (
     <>
-      <div className="bg-black px-4 py-3 text-center text-xs font-medium text-blue-500 sm:text-sm">
-        Looking to hire exceptional talent? Submit a Vacancy →
-      </div>
-
+      <AnnouncementBar />
       <nav className="sticky top-0 z-50 bg-white shadow-sm">
         <div className="mx-auto flex max-w-[1500px] items-center justify-between px-4 py-4 sm:px-6 lg:px-14">
           <NavLink to="/" onClick={() => setIsOpen(false)}>

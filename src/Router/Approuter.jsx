@@ -5,6 +5,7 @@ import Loading from "../components/common/Loader";
 const Home = lazy(() => import("../pages/Home"));
 const About = lazy(() => import("../pages/AboutUsPage"));
 const Employer = lazy(() => import("../pages/Employer"));
+const WorkforceSolution = lazy(() => import("../pages/WorkforceSolution"));
 
 const Approuter = () => {
   return (   
@@ -12,6 +13,7 @@ const Approuter = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
+      <Route path="/workforce-solutions" element={<WorkforceSolution />} />
       <Route path="/employer" element={<Employer />} />
     </Routes>
     </Suspense>
