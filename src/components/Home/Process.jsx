@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { getHowWeWork } from "../../services/homeServices/howWeWorkService";
 
 function Process() {
   const [section, setSection] = useState(null);
@@ -9,9 +9,10 @@ function Process() {
   useEffect(() => {
     const fetchSection = async () => {
       try {
-        const response = await axios.get('/api/how-we-work');
-        setSection(response?.data?.data || null);
+        const data = await getHowWeWork();
+        setSection(data || null);
       } catch (err) {
+        console.error("Error fetching How We Work section:", err);
         setError(true);
       } finally {
         setIsLoading(false);
