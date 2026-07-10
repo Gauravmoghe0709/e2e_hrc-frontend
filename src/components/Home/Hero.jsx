@@ -5,36 +5,22 @@ import { getHeroData } from "../../services/heroService";
 /* ─── Skeleton ─────────────────────────────────────────────────────────── */
 function HeroSkeleton() {
   return (
-    <section className="bg-[#f4f7fb] min-h-[680px] lg:min-h-[760px]">
-      <div className="max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-14 py-10 lg:py-12 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-        {/* Left skeleton */}
-        <div className="animate-pulse space-y-5">
-          <div className="h-8 bg-gray-200 rounded-full w-2/3"></div>
-          <div className="space-y-3">
-            <div className="h-12 bg-gray-200 rounded-lg w-full"></div>
-            <div className="h-12 bg-gray-200 rounded-lg w-4/5"></div>
+    <section className="relative overflow-hidden" style={{ background: "linear-gradient(0deg, rgba(0,0,0,0.5), rgba(0,0,0,0.5))", isolation: "isolate" }}>
+      <div className="animate-pulse mx-auto" style={{ maxWidth: "1280px", padding: "87px 0 135px" }}>
+        <div className="px-4 sm:px-8">
+          <div className="h-8 bg-gray-500/40 rounded-full w-28"></div>
+          <div className="space-y-3 mt-6 lg:mt-10">
+            <div className="h-16 bg-gray-500/40 rounded-lg w-3/4"></div>
+            <div className="h-16 bg-gray-500/40 rounded-lg w-2/3"></div>
           </div>
-          <div className="space-y-2">
-            <div className="h-5 bg-gray-200 rounded w-full"></div>
-            <div className="h-5 bg-gray-200 rounded w-11/12"></div>
-            <div className="h-5 bg-gray-200 rounded w-3/4"></div>
+          <div className="space-y-2 mt-4 lg:mt-6">
+            <div className="h-5 bg-gray-500/40 rounded w-1/2"></div>
+            <div className="h-5 bg-gray-500/40 rounded w-2/5"></div>
           </div>
-          <div className="flex gap-4 pt-2">
-            <div className="h-14 bg-gray-200 rounded-full w-40"></div>
-            <div className="h-14 bg-gray-200 rounded-full w-48"></div>
+          <div className="flex gap-4 pt-2 mt-6">
+            <div className="h-14 bg-gray-500/40 rounded-full w-40"></div>
+            <div className="h-14 bg-gray-500/40 rounded-full w-48"></div>
           </div>
-          <div className="border-t border-gray-200 pt-6 grid grid-cols-4 gap-4">
-            {[1,2,3,4].map(i => (
-              <div key={i} className="space-y-1">
-                <div className="h-8 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-4 bg-gray-200 rounded w-full"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-        {/* Right skeleton — image */}
-        <div className="animate-pulse hidden lg:flex justify-end">
-          <div className="w-full max-w-[760px] aspect-[4/3] bg-gray-200 rounded-2xl"></div>
         </div>
       </div>
     </section>
@@ -44,14 +30,14 @@ function HeroSkeleton() {
 /* ─── Error / Fallback ─────────────────────────────────────────────────── */
 function HeroFallback() {
   return (
-    <section className="bg-[#f4f7fb] min-h-[320px] flex items-center justify-center">
+    <section className="min-h-[320px] flex items-center justify-center" style={{ background: "linear-gradient(0deg, rgba(0,0,0,0.5), rgba(0,0,0,0.5))", isolation: "isolate" }}>
       <div className="text-center py-20 px-6">
         <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mx-auto mb-4">
           <svg className="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <p className="text-gray-500 text-sm">Hero content is currently unavailable. Please try again later.</p>
+        <p className="text-gray-300 text-sm">Hero content is currently unavailable. Please try again later.</p>
       </div>
     </section>
   );
@@ -87,84 +73,165 @@ function Hero() {
   const imageSrc = heroData.heroImage || heroImgPlaceholder;
 
   return (
-    <section className="bg-[#f4f7fb] min-h-[680px] lg:min-h-[760px]">
-      <div className="max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-14 py-10 lg:py-12 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+    <section
+      className="relative overflow-hidden"
+      style={{
+        isolation: "isolate",
+        background: `linear-gradient(0deg, rgba(0,0,0,0.5), rgba(0,0,0,0.5))`,
+      }}
+    >
+      {/* ── "HRC" background watermark ── */}
+      <div
+        className="absolute pointer-events-none select-none overflow-hidden leading-none"
+        style={{
+          left: "21px",
+          top: "0px",
+          width: "1339px",
+          height: "623px",
+          fontFamily: "Poppins, sans-serif",
+          fontWeight: 800,
+          fontSize: "610px",
+          color: "#191C1E",
+          zIndex: 0,
+        }}
+      >
+        HRC
+      </div>
 
-        {/* ── Left column: Text content ── */}
-        <div>
-          {/* Subtitle badge */}
-          {heroData.subtitle && (
-            <span className="bg-lime-200 text-green-700 px-4 py-2 rounded-full text-xs sm:text-sm font-bold inline-block">
-              ● {heroData.subtitle}
-            </span>
-          )}
+      <div className="relative z-10 mx-auto" style={{ maxWidth: "1280px", padding: "87px 0 135px" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start px-4 sm:px-8">
 
-          {/* Title */}
-          <h1 className="text-4xl sm:text-5xl lg:text-[58px] lg:leading-[64px] font-extrabold mt-6 lg:mt-10 text-blue-700 whitespace-pre-line">
-            {heroData.title}
-          </h1>
+          {/* ── Left column: Text content ── */}
+          <div>
+            {/* Trusted badge */}
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
+              style={{
+                background: "linear-gradient(49.52deg, rgba(18, 149, 212, 0.5) -4.12%, rgba(126, 196, 67, 0.5) 85.04%)",
+              }}
+            >
+              <span className="inline-block rounded-full" style={{ width: "8px", height: "8px", background: "#C8D96F" }} />
+              <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 600, fontSize: "14px", lineHeight: "20px", letterSpacing: "0.7px", color: "#00458D" }}>
+                Trusted
+              </span>
+            </div>
 
-          {/* Description */}
-          <p className="text-base sm:text-lg lg:text-xl text-gray-700 mt-4 lg:mt-6 max-w-xl leading-7 lg:leading-9">
-            {heroData.description}
-          </p>
+            {/* Title */}
+            <h1 className="mt-6 lg:mt-10">
+              <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 800, fontSize: "clamp(36px,5vw,60px)", lineHeight: "1.2", letterSpacing: "-1.28px", display: "block", color: "#FFFFFF" }}>
+                Connecting Talent.
+              </span>
+              <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 800, fontSize: "clamp(36px,5vw,60px)", lineHeight: "1.2", letterSpacing: "-1.28px", display: "block", color: "#FFFFFF" }}>
+                Building{" "}
+                <span style={{ color: "#F39308" }}>Futures.</span>
+              </span>
+            </h1>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap gap-4 mt-6 lg:mt-8">
-            {heroData.buttonText && (
+            {/* Description */}
+            <p
+              className="mt-4 lg:mt-6"
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 400,
+                fontSize: "15px",
+                lineHeight: "23px",
+                color: "#FFFFFF",
+                maxWidth: "672px",
+              }}
+            >
+              {heroData.description}
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap gap-4 mt-6 lg:mt-8">
               <a
                 href={heroData.buttonLink || "#"}
-                className="inline-block bg-orange-400 hover:bg-orange-500 active:bg-orange-600 text-white px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-bold transition-colors shadow-md shadow-orange-200"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "17px 32px",
+                  background: "#F39308",
+                  borderRadius: "9999px",
+                  boxShadow: "0px 1px 2px rgba(0,0,0,0.05)",
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 600,
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                  letterSpacing: "0.7px",
+                  color: "#004CA5",
+                }}
               >
-                {heroData.buttonText} →
+                Hire Talent
+                <span>→</span>
               </a>
-            )}
-            <button className="border-2 border-blue-700 text-blue-700 hover:bg-blue-50 active:bg-blue-100 px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-bold transition-colors">
-              Find Opportunities
-            </button>
+              <button
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "16px 32px",
+                  background: "#F7F9FB",
+                  border: "1px solid #C2C6D4",
+                  borderRadius: "9999px",
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 600,
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                  letterSpacing: "0.7px",
+                  color: "#004CA5",
+                }}
+              >
+                Find Opportunities
+                <span>→</span>
+              </button>
+            </div>
+
+            {/* Stats Row */}
+            <div className="border-t border-white/20 mt-8 pt-6 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-2xl">
+              <div>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white">0+</h3>
+                <p className="text-xs sm:text-sm uppercase text-white/60 mt-0.5">Clients</p>
+              </div>
+              <div>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white">0+</h3>
+                <p className="text-xs sm:text-sm uppercase text-white/60 mt-0.5">Candidates</p>
+              </div>
+              <div>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white">25+</h3>
+                <p className="text-xs sm:text-sm uppercase text-white/60 mt-0.5">Years of Experience</p>
+              </div>
+              <div>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white">4</h3>
+                <p className="text-xs sm:text-sm uppercase text-white/60 mt-0.5">Offices</p>
+              </div>
+            </div>
           </div>
 
-          {/* Stats Row */}
-          <div className="border-t border-gray-200 mt-8 pt-6 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-2xl">
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-blue-700">0+</h3>
-              <p className="text-xs sm:text-sm uppercase text-gray-500 mt-0.5">Clients</p>
-            </div>
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-blue-700">0+</h3>
-              <p className="text-xs sm:text-sm uppercase text-gray-500 mt-0.5">Candidates</p>
-            </div>
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-blue-700">25+</h3>
-              <p className="text-xs sm:text-sm uppercase text-gray-500 mt-0.5">Years of Experience</p>
-            </div>
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-blue-700">4</h3>
-              <p className="text-xs sm:text-sm uppercase text-gray-500 mt-0.5">Offices</p>
+          {/* ── Right column: Hero Image ── */}
+          <div className="flex justify-center lg:justify-end mt-6 lg:mt-0">
+            <div className="relative">
+              <div className="absolute pointer-events-none" style={{ top: "-28px", left: "38.5px", width: "519px", height: "519px", borderRadius: "9999px", background: "#C2D760", opacity: "0.33", zIndex: 0 }} />
+              <div className="absolute pointer-events-none" style={{ top: "36px", left: "106.5px", width: "419px", height: "419px", borderRadius: "9999px", border: "1px dashed #C2D760", zIndex: 0 }} />
+
+              <div className="relative z-10 w-full max-w-[560px] lg:max-w-[760px] aspect-[4/3]">
+              {!imgLoaded && (
+                <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-2xl" />
+              )}
+              <img
+                src={imageSrc}
+                alt={heroData.title || "Hero Image"}
+                loading="lazy"
+                decoding="async"
+                onLoad={() => setImgLoaded(true)}
+                onError={(e) => { e.target.src = heroImgPlaceholder; setImgLoaded(true); }}
+                className={`w-full h-full object-contain rounded-2xl transition-opacity duration-500 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+              />
             </div>
           </div>
+          </div>
+
         </div>
-
-        {/* ── Right column: Hero Image ── */}
-        <div className="flex justify-center lg:justify-end mt-6 lg:mt-0">
-          {/* Wrapper reserves space to prevent layout shift */}
-          <div className="relative w-full max-w-[560px] lg:max-w-[760px] aspect-[4/3]">
-            {/* Blur placeholder while image loads */}
-            {!imgLoaded && (
-              <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-2xl" />
-            )}
-            <img
-              src={imageSrc}
-              alt={heroData.title || "Hero Image"}
-              loading="lazy"
-              decoding="async"
-              onLoad={() => setImgLoaded(true)}
-              onError={(e) => { e.target.src = heroImgPlaceholder; setImgLoaded(true); }}
-              className={`w-full h-full object-contain rounded-2xl transition-opacity duration-500 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
-            />
-          </div>
-        </div>
-
       </div>
     </section>
   );

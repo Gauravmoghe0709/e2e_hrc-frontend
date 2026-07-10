@@ -121,7 +121,7 @@ function Sectors() {
         ) : (
           <div
             ref={scrollRef}
-            className="mt-12 flex gap-6 overflow-x-auto scroll-smooth pb-2"
+            className="mt-12 flex gap-6 overflow-x-auto scroll-smooth pb-2 no-scrollbar"
           >
             {services.map((service) => (
               <div

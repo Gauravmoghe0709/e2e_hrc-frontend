@@ -7,11 +7,15 @@ import Footer from "../components/Footer";
 import LazySection from "../components/common/LazySection";
 import Loading from "../components/common/Loader";
 
+const WhoWeAre = lazy(() => import("../components/Home/WhoWeAre"));
+const MissionVision = lazy(() => import("../components/Home/MissionVision"));
+const Testimonials = lazy(() => import("../components/Home/Testimonials"));
+const GlobalPresence = lazy(() => import("../components/Home/GlobalPresence"));
 const ServiceCards = lazy(() => import("../components/Home/ServiceCards"));
 const Sectors = lazy(() => import("../components/Home/Sectors"));
 const Process = lazy(() => import("../components/Home/Process"));
 const Locations = lazy(() => import("../components/Home/Locations"));
-const Blogs = lazy(() => import("../components/Home/Blogs"));
+const BlogSection = lazy(() => import("../components/Home/BlogSection"));
 const ContactSection = lazy(() => import("../components/Home/ContactSection"));
 
 
@@ -21,6 +25,30 @@ function Home() {
     <>
       <Navbar />
       <Hero />
+
+      <LazySection height={636}>
+        <Suspense fallback={<Loading />}>
+          <WhoWeAre />
+        </Suspense>
+      </LazySection>
+
+      <LazySection height={564}>
+        <Suspense fallback={<Loading />}>
+          <MissionVision />
+        </Suspense>
+      </LazySection>
+
+      <LazySection height={712}>
+        <Suspense fallback={<Loading />}>
+          <Testimonials />
+        </Suspense>
+      </LazySection>
+
+      <LazySection height={624}>
+        <Suspense fallback={<Loading />}>
+          <GlobalPresence />
+        </Suspense>
+      </LazySection>
 
       <LazySection height={500}>
         <Suspense fallback={<Loading />}>
@@ -48,7 +76,7 @@ function Home() {
 
       <LazySection height={500}>
         <Suspense fallback={<Loading />}>
-          <Blogs />
+          <BlogSection />
         </Suspense>
       </LazySection>
 
