@@ -1,36 +1,41 @@
-import { useRef } from "react";
-
-const testimonials = [
-  {
-    id: 1,
-    title: "Efficient and Effective Hiring Process!",
-    quote: "\"The efficiency of Applyfier's hiring process is commendable. The platform's intuitive interface, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.\"",
-  },
-  {
-    id: 2,
-    title: "Top-Notch Talent at Our Fingertips!",
-    quote: "\"As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.\"",
-  },
-  {
-    id: 3,
-    title: "Seamless Recruitment Experience",
-    quote: "\"The platform's end-to-end recruitment solution transformed how we hire. From job posting to candidate onboarding, every step is streamlined. The quality of candidates and the speed of matching exceeded our expectations.\"",
-  },
-  {
-    id: 4,
-    title: "Exceptional Talent Pool Access",
-    quote: "\"Gaining access to a pre-vetted talent pool saved us countless hours. The candidates we found through Applyfier have consistently performed at the highest level. It's now an indispensable part of our hiring strategy.\"",
-  },
-];
+import React, { useEffect, useRef, useState } from "react";
+import { getHomeTestimonials } from "../../services/homeSectionsService";
 
 function Testimonials() {
   const scrollRef = useRef(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        setLoading(true);
+        const response = await getHomeTestimonials();
+        setData(response?.data || null);
+      } catch {
+        setData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
 
   const scroll = (dir) => {
     if (!scrollRef.current) return;
     const amount = 574;
     scrollRef.current.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" });
   };
+
+  if (!loading && (!data || data.isActive === false)) {
+    return null;
+  }
+
+  const sectionTitle = data?.sectionTitle || "Testimonials";
+  const sectionHeading = data?.sectionHeading || "What They Are Saying";
+  const sectionDescription = data?.sectionDescription || "";
+  const items = data?.items?.filter(i => i.isActive !== false) || [];
 
   return (
     <section
@@ -41,9 +46,8 @@ function Testimonials() {
       }}
     >
       <div className="mx-auto" style={{ maxWidth: "1240px", padding: "0 20px" }}>
-        {/* ── Header ── */}
+        {/* Header */}
         <div className="flex flex-col" style={{ gap: "40px" }}>
-          {/* Title row */}
           <div className="flex flex-col" style={{ gap: "30px" }}>
             <div className="flex items-center" style={{ gap: "20px" }}>
               <div style={{ width: "80px", height: "0px", borderTop: "1px solid #FFFFFF" }} />
@@ -59,7 +63,7 @@ function Testimonials() {
                   color: "#F39308",
                 }}
               >
-                Testimonials
+                {loading ? "Testimonials" : sectionTitle}
               </div>
             </div>
 
@@ -72,11 +76,10 @@ function Testimonials() {
                 color: "#000000",
               }}
             >
-              What They Are Saying
+              {loading ? "What They Are Saying" : sectionHeading}
             </h2>
           </div>
 
-          {/* Subtitle + arrows */}
           <div className="flex items-end justify-between">
             <p
               style={{
@@ -87,10 +90,9 @@ function Testimonials() {
                 maxWidth: "580px",
               }}
             >
-              Discover the stories and experiences of individuals and companies who have found success and excellence through Applyfier
+              {loading ? "Discover the stories and experiences of individuals and companies who have found success and excellence through Applyfier" : sectionDescription}
             </p>
 
-            {/* Navigation arrows */}
             <div className="hidden sm:flex items-center" style={{ gap: "10px" }}>
               <button
                 onClick={() => scroll("left")}
@@ -128,15 +130,15 @@ function Testimonials() {
           </div>
         </div>
 
-        {/* ── Cards ── */}
+        {/* Cards */}
         <div
           ref={scrollRef}
           className="flex overflow-x-auto no-scrollbar mt-10"
           style={{ gap: "44px", paddingBottom: "10px" }}
         >
-          {testimonials.map((t) => (
+          {items.map((t, idx) => (
             <div
-              key={t.id}
+              key={t._id || idx}
               className="flex-shrink-0 bg-white rounded-xl relative flex flex-col items-center justify-center"
               style={{ width: "530px", height: "388px", borderRadius: "12px" }}
             >
@@ -144,7 +146,6 @@ function Testimonials() {
                 className="flex flex-col items-center justify-center"
                 style={{ width: "400px", gap: "30px" }}
               >
-                {/* Title */}
                 <h3
                   style={{
                     fontFamily: "Poppins, sans-serif",
@@ -158,7 +159,6 @@ function Testimonials() {
                   {t.title}
                 </h3>
 
-                {/* Quote */}
                 <p
                   style={{
                     fontFamily: "Inter, sans-serif",
@@ -172,7 +172,6 @@ function Testimonials() {
                   {t.quote}
                 </p>
 
-                {/* Divider */}
                 <div
                   style={{
                     width: "400px",
@@ -182,7 +181,6 @@ function Testimonials() {
                   }}
                 />
 
-                {/* Signature badge */}
                 <div className="flex items-center self-start" style={{ gap: "16px" }}>
                   <div
                     style={{
@@ -208,7 +206,7 @@ function Testimonials() {
                         color: "#000000",
                       }}
                     >
-                      Verified Client
+                      {t.clientName || "Verified Client"}
                     </div>
                     <div
                       style={{
@@ -218,7 +216,7 @@ function Testimonials() {
                         color: "#666",
                       }}
                     >
-                      E2E Consultancy
+                      {t.clientCompany || "E2E Consultancy"}
                     </div>
                   </div>
                 </div>

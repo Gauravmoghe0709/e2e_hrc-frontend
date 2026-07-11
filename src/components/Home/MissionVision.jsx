@@ -1,4 +1,5 @@
-import visionBgImg from "../../assets/images/hero.png";
+import React, { useEffect, useState } from "react";
+import { getHomeMissionVision } from "../../services/homeSectionsService";
 
 function MissionIcon() {
   return (
@@ -60,11 +61,40 @@ function VisionIcon() {
 }
 
 function MissionVision() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMissionVision = async () => {
+      try {
+        setLoading(true);
+        const response = await getHomeMissionVision();
+        setData(response?.data || null);
+      } catch {
+        setData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMissionVision();
+  }, []);
+
+  if (!loading && (!data || data.isActive === false)) {
+    return null;
+  }
+
+  const missionTitle = data?.missionTitle || "Our Mission";
+  const missionDescription = data?.missionDescription || "";
+  const visionTitle = data?.visionTitle || "Our Vision";
+  const visionDescription = data?.visionDescription || "";
+  const visionImage = data?.visionImage || "";
+
   return (
     <section className="bg-white overflow-hidden">
       <div className="mx-auto" style={{ maxWidth: "1213px", padding: "59px 0 67px" }}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* ── Mission Card ── */}
+          {/* Mission Card */}
           <div
             className="relative flex flex-col justify-center"
             style={{
@@ -77,7 +107,6 @@ function MissionVision() {
               isolation: "isolate",
             }}
           >
-            {/* Decorative icon top-right */}
             <div
               className="absolute pointer-events-none"
               style={{ right: "0.5px", top: "1px", width: "164px", height: "164px", opacity: 0.05, zIndex: 1, padding: "32px" }}
@@ -89,9 +118,7 @@ function MissionVision() {
 
             <div className="relative" style={{ zIndex: 0 }}>
               <MissionIcon />
-
               <div style={{ width: "48px", height: "4px", background: "#FFB952", borderRadius: "9999px", marginTop: "16px" }} />
-
               <h3
                 className="mt-2"
                 style={{
@@ -103,9 +130,8 @@ function MissionVision() {
                   color: "#000000",
                 }}
               >
-                Our Mission
+                {missionTitle}
               </h3>
-
               <p
                 className="mt-4"
                 style={{
@@ -116,12 +142,12 @@ function MissionVision() {
                   color: "#000000",
                 }}
               >
-                To empower businesses globally by connecting them with exceptional talent, fostering environments where both organizations and individuals can thrive and achieve their maximum potential through strategic workforce alignment.
+                {loading ? "Loading content..." : missionDescription}
               </p>
             </div>
           </div>
 
-          {/* ── Vision Card ── */}
+          {/* Vision Card */}
           <div
             className="relative flex flex-col justify-center"
             style={{
@@ -133,16 +159,14 @@ function MissionVision() {
               boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1)",
             }}
           >
-            {/* Background image */}
             <div className="absolute inset-0" style={{ zIndex: 0 }}>
-              <img
-                src={visionBgImg}
-                alt=""
-                className="w-full h-full object-cover"
-              />
+              {visionImage ? (
+                <img src={visionImage} alt="" className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full" style={{ background: "#00458D" }} />
+              )}
             </div>
 
-            {/* Dark blue overlay */}
             <div
               className="absolute inset-0"
               style={{
@@ -153,12 +177,9 @@ function MissionVision() {
               }}
             />
 
-            {/* Content */}
             <div className="relative" style={{ zIndex: 2 }}>
               <VisionIcon />
-
               <div style={{ width: "48px", height: "4px", background: "#FFB952", borderRadius: "9999px", marginTop: "16px" }} />
-
               <h3
                 className="mt-2"
                 style={{
@@ -170,9 +191,8 @@ function MissionVision() {
                   color: "#FFFFFF",
                 }}
               >
-                Our Vision
+                {visionTitle}
               </h3>
-
               <p
                 className="mt-4"
                 style={{
@@ -183,7 +203,7 @@ function MissionVision() {
                   color: "rgba(255, 255, 255, 0.9)",
                 }}
               >
-                To be the undisputed global leader in specialized recruitment consultancy, recognized universally for our uncompromising integrity, innovative methodologies, and unparalleled success in building the workforce of tomorrow.
+                {loading ? "Loading content..." : visionDescription}
               </p>
             </div>
           </div>

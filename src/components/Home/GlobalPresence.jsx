@@ -1,17 +1,47 @@
+import React, { useEffect, useState } from "react";
 import worldMapImg from "../../assets/images/Career Growth imgs/map 1.png";
+import { getHomeGlobalPresence } from "../../services/homeSectionsService";
 
-const locations = [
-  { name: "Global HQ", left: "45.01%", top: "30.06%", size: 16, z: 1, dotColor: "#00458D", ringColor: "rgba(0,69,141,0.2)" },
-  { name: "Dubai Office", left: "57.99%", top: "45.01%", size: 12, z: 2, dotColor: "#FFB952", ringColor: "rgba(255,185,82,0.2)" },
-  { name: "Europe Hub", left: "50%", top: "35.05%", size: 12, z: 3, dotColor: "#FFB952", ringColor: "rgba(255,185,82,0.2)" },
-  { name: "Asia Office", left: "64.97%", top: "50%", size: 12, z: 4, dotColor: "#FFB952", ringColor: "rgba(255,185,82,0.2)" },
+const defaultLocations = [
+  { name: "Global HQ", left: "45.01%", top: "30.06%", size: 16, dotColor: "#00458D", ringColor: "rgba(0,69,141,0.2)" },
+  { name: "Dubai Office", left: "57.99%", top: "45.01%", size: 12, dotColor: "#FFB952", ringColor: "rgba(255,185,82,0.2)" },
+  { name: "Europe Hub", left: "50%", top: "35.05%", size: 12, dotColor: "#FFB952", ringColor: "rgba(255,185,82,0.2)" },
+  { name: "Asia Office", left: "64.97%", top: "50%", size: 12, dotColor: "#FFB952", ringColor: "rgba(255,185,82,0.2)" },
 ];
 
 function GlobalPresence() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchGlobalPresence = async () => {
+      try {
+        setLoading(true);
+        const response = await getHomeGlobalPresence();
+        setData(response?.data || null);
+      } catch {
+        setData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGlobalPresence();
+  }, []);
+
+  if (!loading && (!data || data.isActive === false)) {
+    return null;
+  }
+
+  const title = data?.title || "Our Global Footprint";
+  const description = data?.description || "";
+  const mapImage = data?.mapImage || "";
+  const locations = data?.locations?.filter(l => l.isActive !== false) || defaultLocations;
+
   return (
     <section className="bg-white overflow-hidden" style={{ padding: "48px 0 47px" }}>
       <div className="mx-auto flex flex-col items-center" style={{ maxWidth: "1280px", padding: "0 32px", gap: "44px" }}>
-        {/* ── Header ── */}
+        {/* Header */}
         <div className="flex flex-col items-center text-center" style={{ gap: "16px", maxWidth: "672px" }}>
           <h2
             style={{
@@ -23,7 +53,7 @@ function GlobalPresence() {
               color: "#191C1E",
             }}
           >
-            Our Global Footprint
+            {loading ? "Our Global Footprint" : title}
           </h2>
           <p
             style={{
@@ -34,11 +64,11 @@ function GlobalPresence() {
               color: "#424752",
             }}
           >
-            Connecting talent across borders with localized expertise and global reach.
+            {loading ? "Connecting talent across borders with localized expertise and global reach." : description}
           </p>
         </div>
 
-        {/* ── Map Card ── */}
+        {/* Map Card */}
         <div
           className="relative w-full overflow-hidden"
           style={{
@@ -49,34 +79,30 @@ function GlobalPresence() {
             aspectRatio: "1196 / 385",
           }}
         >
-          {/* World map image at 30% opacity with white blend */}
           <div className="absolute inset-0 pointer-events-none select-none" style={{ zIndex: 0 }}>
             <img
-              src={worldMapImg}
+              src={mapImage || worldMapImg}
               alt=""
               className="w-full h-full object-cover"
               style={{ opacity: 0.3 }}
             />
           </div>
 
-          {/* Location markers (dots with tooltip labels) */}
-          {locations.map((loc) => (
+          {locations.map((loc, idx) => (
             <div
-              key={loc.name}
+              key={loc.name || idx}
               className="absolute group flex flex-col items-center"
-              style={{ left: loc.left, top: loc.top, zIndex: loc.z }}
+              style={{ left: loc.left, top: loc.top, zIndex: idx + 1 }}
             >
-              {/* Dot */}
               <div
                 className="rounded-full"
                 style={{
-                  width: `${loc.size}px`,
-                  height: `${loc.size}px`,
-                  background: loc.dotColor,
-                  boxShadow: `0px 0px 0px 4px ${loc.ringColor}`,
+                  width: `${loc.size || 12}px`,
+                  height: `${loc.size || 12}px`,
+                  background: loc.dotColor || "#FFB952",
+                  boxShadow: `0px 0px 0px 4px ${loc.ringColor || "rgba(255,185,82,0.2)"}`,
                 }}
               />
-              {/* Tooltip label (hidden by default) */}
               <div
                 className="absolute whitespace-nowrap transition-opacity duration-200 group-hover:opacity-100"
                 style={{

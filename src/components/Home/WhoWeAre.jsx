@@ -1,6 +1,38 @@
-import teamImg from "../../assets/images/hero.png";
+import React, { useEffect, useState } from "react";
+import { getHomeWhoWeAre } from "../../services/homeSectionsService";
 
 function WhoWeAre() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchWhoWeAre = async () => {
+      try {
+        setLoading(true);
+        const response = await getHomeWhoWeAre();
+        setData(response?.data || null);
+      } catch {
+        setData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWhoWeAre();
+  }, []);
+
+  if (!loading && (!data || data.isActive === false)) {
+    return null;
+  }
+
+  const title = data?.title || "Who We Are";
+  const description1 = data?.description1 || "";
+  const description2 = data?.description2 || "";
+  const description3 = data?.description3 || "";
+  const image = data?.image || "";
+  const experienceYears = data?.experienceYears || "";
+  const experienceLabel = data?.experienceLabel || "";
+
   return (
     <section className="relative overflow-hidden bg-white">
       {/* "HR" watermark */}
@@ -39,63 +71,75 @@ function WhoWeAre() {
 
       <div className="relative z-10 mx-auto px-4 sm:px-8 lg:px-12" style={{ maxWidth: "1300px", paddingTop: "66px", paddingBottom: "14px" }}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16">
-          {/* ── Left column ── */}
+          {/* Left column */}
           <div className="max-w-[593px]">
-            <h2
-              style={{
-                fontFamily: "Poppins, sans-serif",
-                fontWeight: 800,
-                fontSize: "36px",
-                lineHeight: "56px",
-                letterSpacing: "-0.48px",
-                color: "#191C1E",
-              }}
-            >
-              Who We Are
-            </h2>
+            {loading ? (
+              <div className="text-slate-500">Loading content...</div>
+            ) : (
+              <>
+                <h2
+                  style={{
+                    fontFamily: "Poppins, sans-serif",
+                    fontWeight: 800,
+                    fontSize: "36px",
+                    lineHeight: "56px",
+                    letterSpacing: "-0.48px",
+                    color: "#191C1E",
+                  }}
+                >
+                  {title}
+                </h2>
 
-            <div className="mt-1" style={{ width: "64px", height: "4px", background: "#00458D" }} />
+                <div className="mt-1" style={{ width: "64px", height: "4px", background: "#00458D" }} />
 
-            <div className="mt-2 space-y-6">
-              <p
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 400,
-                  fontSize: "18px",
-                  lineHeight: "28px",
-                  color: "#424752",
-                }}
-              >
-                Established in 2007, E2E Human Resource Consultancy has evolved from a boutique agency into a premier global recruitment powerhouse. We specialize in identifying, attracting, and securing top-tier talent for organizations that demand excellence.
-              </p>
+                <div className="mt-2 space-y-6">
+                  {description1 ? (
+                    <p
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontWeight: 400,
+                        fontSize: "18px",
+                        lineHeight: "28px",
+                        color: "#424752",
+                      }}
+                    >
+                      {description1}
+                    </p>
+                  ) : null}
 
-              <p
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 400,
-                  fontSize: "18px",
-                  lineHeight: "28px",
-                  color: "#424752",
-                }}
-              >
-                Our approach is deeply consultative. We don't just fill vacancies; we analyze workforce requirements, understand corporate cultures, and deliver talent solutions that drive measurable business outcomes. With deep multi-sector expertise ranging from Engineering to Healthcare, our consultants operate as an extension of your own internal teams.
-              </p>
+                  {description2 ? (
+                    <p
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontWeight: 400,
+                        fontSize: "18px",
+                        lineHeight: "28px",
+                        color: "#424752",
+                      }}
+                    >
+                      {description2}
+                    </p>
+                  ) : null}
 
-              <p
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 400,
-                  fontSize: "18px",
-                  lineHeight: "28px",
-                  color: "#424752",
-                }}
-              >
-                In an era of automated hiring, we remain staunch advocates for the human element—balancing cutting-edge sourcing technology with nuanced human judgment to create perfect professional alignments.
-              </p>
-            </div>
+                  {description3 ? (
+                    <p
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontWeight: 400,
+                        fontSize: "18px",
+                        lineHeight: "28px",
+                        color: "#424752",
+                      }}
+                    >
+                      {description3}
+                    </p>
+                  ) : null}
+                </div>
+              </>
+            )}
           </div>
 
-          {/* ── Right column ── */}
+          {/* Right column */}
           <div className="relative flex items-start justify-center lg:justify-end mt-8 lg:mt-0">
             <div className="relative" style={{ width: "100%", maxWidth: "593px" }}>
               {/* Image card */}
@@ -110,56 +154,60 @@ function WhoWeAre() {
                   background: "#f0f2f5",
                 }}
               >
-                <img
-                  src={teamImg}
-                  alt="Diverse team of corporate professionals collaborating in a modern boardroom"
-                  className="w-full h-full object-cover"
-                />
+                {image ? (
+                  <img
+                    src={image}
+                    alt={title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : null}
               </div>
 
               {/* Floating stat card */}
-              <div
-                className="absolute"
-                style={{
-                  left: "-8px",
-                  bottom: "-8px",
-                  padding: "32px",
-                  gap: "4px",
-                  background: "rgba(255, 255, 255, 0.85)",
-                  border: "1px solid rgba(226, 232, 240, 0.8)",
-                  boxShadow: "0px 1px 2px rgba(0,0,0,0.05)",
-                  backdropFilter: "blur(6px)",
-                  WebkitBackdropFilter: "blur(6px)",
-                  borderRadius: "24px",
-                  zIndex: 2,
-                }}
-              >
+              {experienceYears || experienceLabel ? (
                 <div
+                  className="absolute"
                   style={{
-                    fontFamily: "Poppins, sans-serif",
-                    fontWeight: 600,
-                    fontSize: "32px",
-                    lineHeight: "40px",
-                    color: "#00458D",
+                    left: "-8px",
+                    bottom: "-8px",
+                    padding: "32px",
+                    gap: "4px",
+                    background: "rgba(255, 255, 255, 0.85)",
+                    border: "1px solid rgba(226, 232, 240, 0.8)",
+                    boxShadow: "0px 1px 2px rgba(0,0,0,0.05)",
+                    backdropFilter: "blur(6px)",
+                    WebkitBackdropFilter: "blur(6px)",
+                    borderRadius: "24px",
+                    zIndex: 2,
                   }}
                 >
-                  25+
+                  <div
+                    style={{
+                      fontFamily: "Poppins, sans-serif",
+                      fontWeight: 600,
+                      fontSize: "32px",
+                      lineHeight: "40px",
+                      color: "#00458D",
+                    }}
+                  >
+                    {experienceYears}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      fontWeight: 600,
+                      fontSize: "14px",
+                      lineHeight: "20px",
+                      letterSpacing: "0.7px",
+                      textTransform: "uppercase",
+                      color: "#424752",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {experienceLabel}
+                  </div>
                 </div>
-                <div
-                  style={{
-                    fontFamily: "Inter, sans-serif",
-                    fontWeight: 600,
-                    fontSize: "14px",
-                    lineHeight: "20px",
-                    letterSpacing: "0.7px",
-                    textTransform: "uppercase",
-                    color: "#424752",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Years of Experience
-                </div>
-              </div>
+              ) : null}
             </div>
           </div>
         </div>
