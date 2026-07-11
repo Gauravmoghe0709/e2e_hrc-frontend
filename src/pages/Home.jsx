@@ -10,6 +10,7 @@ import Loading from "../components/common/Loader";
 const ServiceCards = lazy(() => import("../components/Home/ServiceCards"));
 const Sectors = lazy(() => import("../components/Home/Sectors"));
 const Process = lazy(() => import("../components/Home/Process"));
+const WhyChooseUs = lazy(() => import("../components/Home/WhyChooseUs"))
 const Locations = lazy(() => import("../components/Home/Locations"));
 const BlogSection = lazy(() => import("../components/Home/BlogSection"));
 const ContactSection = lazy(() => import("../components/Home/ContactSection"));
@@ -39,6 +40,13 @@ function Home() {
           <Process />
         </Suspense>
       </LazySection>
+
+      <LazySection height={500}>
+        <Suspense fallback={<Loading />}>
+          <WhyChooseUs />
+        </Suspense>
+      </LazySection>
+
 
       <LazySection height={500}>
         <Suspense fallback={<Loading />}>
