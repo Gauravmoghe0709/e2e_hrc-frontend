@@ -78,7 +78,7 @@ function Hero() {
           <div style={{ position: "absolute", width: "519px", height: "519px", left: "calc(50% - 519px/2 - 18px)", top: "calc(50% - 519px/2 - 54.5px)", background: "#C2D760", opacity: 0.33, borderRadius: "9999px" }} />
           <div style={{ position: "absolute", width: "419px", height: "419px", left: "calc(50% - 419px/2)", top: "calc(50% - 419px/2 - 40.5px)", boxSizing: "border-box", border: "1px dashed #C2D760", borderRadius: "9999px" }} />
 
-          <div style={{ position: "absolute", width: "697px", left: "calc(50% - 697px/2)", top: "0", bottom: "14.16%" }}>
+          <div style={{ position: "absolute", width: "697px", left: "calc(50% - 697px/2 - 40px)", top: "0", bottom: "14.16%" }}>
             {!imgLoaded && (
               <div className="absolute inset-0 bg-gray-100 animate-pulse rounded-2xl" />
             )}
@@ -168,18 +168,20 @@ function Hero() {
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "0px 3px 8px", gap: "10px", width: "632px", height: "95px", borderTop: "1px solid #F3F4F6", flex: "none", order: 4, boxSizing: "border-box" }}>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-start", padding: "0px", gap: "24px", width: "576.25px", height: "70px" }}>
               {[
-                { value: "0+", label: "CLIENTS" },
-                { value: "0+", label: "CANDIDATES" },
-                { value: "25+", label: "YEARS OF EXPERIENCE" },
-                { value: "4", label: "OFFICES" },
+                { number: "0+", label: "CLIENTS", containerWidth: "96px" },
+                { number: "0+", label: "CANDIDATES", containerWidth: "131px" },
+                { number: "25+", label: "YEARS OF EXPERIENCE", containerWidth: "138.62px" },
+                { number: "4", label: "OFFICES", containerWidth: "138.62px" },
               ].map((stat) => (
-                <div key={stat.label} style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "0px 0px 24px", width: stat.label === "CLIENTS" ? "96px" : "138.62px", height: "72px" }}>
-                  <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 700, fontSize: "24px", lineHeight: "32px", color: "#004CA5" }}>
-                    {stat.value}
+                <div key={stat.label} style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "0px 0px 24px", width: stat.containerWidth, height: "72px" }}>
+                  <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 700, fontSize: "24px", lineHeight: "32px", color: "#004CA5", display: "flex", alignItems: "center", height: "32px", marginLeft: "-64px" }}>
+                    {stat.number}
                   </span>
-                  <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 400, fontSize: "12px", lineHeight: "16px", letterSpacing: "0.3px", textTransform: "uppercase", color: "#000000", marginTop: "8px" }}>
-                    {stat.label}
-                  </span>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0px", width: stat.containerWidth, height: "16px" }}>
+                    <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 400, fontSize: "12px", lineHeight: "16px", display: "flex", alignItems: "center", letterSpacing: "0.3px", textTransform: "uppercase", color: "#000000" }}>
+                      {stat.label}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
