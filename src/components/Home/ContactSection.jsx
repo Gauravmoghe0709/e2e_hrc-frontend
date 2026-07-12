@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Check, Phone, Mail, User, Paperclip, ChevronDown, ArrowRight, Search } from "lucide-react";
 import { getContactCta } from "../../services/contactCtaService";
+import groupIcon from "../../assets/images/Career Growth imgs/Group.png";
 
 /**
  * ContactSection.jsx
@@ -95,7 +96,7 @@ const COUNTRIES = [
   { name: "Latvia", code: "LV", dial: "+371", flag: "🇱🇻" },
   { name: "Lebanon", code: "LB", dial: "+961", flag: "🇱🇧" },
   { name: "Lesotho", code: "LS", dial: "+266", flag: "🇱🇸" },
-  { name: "Liberia", code: "LR", dial: "+231", flag: "🇱🇷" },
+  { name: "Liberia", code: "LR", dial: "+233", flag: "🇱🇷" },
   { name: "Libya", code: "LY", dial: "+218", flag: "🇱🇾" },
   { name: "Liechtenstein", code: "LI", dial: "+423", flag: "🇱🇮" },
   { name: "Lithuania", code: "LT", dial: "+370", flag: "🇱🇹" },
@@ -239,12 +240,12 @@ const ContactSection = () => {
   const contactCta = ctaData?.data || ctaData;
   const ctaActive = contactCta?.isActive !== false;
   const badgeText = contactCta?.badgeText || "Ready to get started?";
-  const headingLine1 = contactCta?.headingLine1 || "Let’s Build";
+  const headingLine1 = contactCta?.headingLine1 || "Let's Build";
   const highlightText = contactCta?.highlightText || "Success";
   const headingLine2 = contactCta?.headingLine2 || "Together";
   const description =
     contactCta?.description ||
-    "Whether you’re hiring exceptional talent or searching for your next opportunity, we are here to help every step of the way.";
+    "Whether you're hiring exceptional talent or searching for your next opportunity, we are here to help every step of the way.";
   const feature1 = contactCta?.feature1 || "Dedicated consultant assigned to you";
   const feature2 = contactCta?.feature2 || "Response within 24 hours";
   const button1Text = contactCta?.button1Text || "Hire Talent";
@@ -334,16 +335,18 @@ const ContactSection = () => {
         {/* RIGHT SIDE - FORM CARD (scrollable) */}
         <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-md mx-auto lg:mx-0 lg:ml-auto h-[560px] flex flex-col">
           {/* Header (fixed, not part of scroll area) */}
-          <div className="flex items-start justify-between mb-2 shrink-0">
-            <h3 className="text-xl sm:text-2xl font-bold text-[#0b3a91] pr-4">
-              Get in Touch with Our Employee Team
-            </h3>
-            <div className="shrink-0 text-amber-400">
-              <Mail className="w-10 h-10" strokeWidth={1.5} />
+          <div className="flex items-start justify-between mb-3 shrink-0">
+            <div className="flex-1 pr-3">
+              <h3 style={{ fontFamily: "Inter, sans-serif", fontWeight: 700, fontSize: "20px", lineHeight: "1.2", color: "#004CA5", margin: 0 }}>
+                Get in Touch with Our Employee Team
+              </h3>
+            </div>
+            <div className="shrink-0">
+              <img src={groupIcon} alt="" style={{ width: "80px", height: "60px", opacity: 1 }} />
             </div>
           </div>
 
-          <p className="text-gray-500 text-sm mb-4 shrink-0">
+          <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 400, fontSize: "12px", lineHeight: "1.5", color: "#6F6C8F", margin: 0, marginBottom: "16px" }}>
             Have questions about job opportunities, applications, or workplace
             support? Fill out the form below and our team will get back to you
             shortly.

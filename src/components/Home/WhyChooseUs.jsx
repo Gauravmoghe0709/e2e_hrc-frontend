@@ -16,10 +16,6 @@ const getImageUrl = (imagePath) => {
   if (imagePath.startsWith('http')) {
     return imagePath;
   }
-  // Using replace to correctly prepend API base url but not /api if it's already an upload url, or simply prepending
-  // If backend returns /uploads/image.png, and API_BASE_URL is http://localhost:3000/api
-  // The correct absolute path is likely http://localhost:3000/uploads/image.png
-  // So replacing /api if it exists in API_BASE_URL
   const baseUrl = API_BASE_URL.replace('/api', '');
   return `${baseUrl}${imagePath}`;
 };
@@ -65,14 +61,14 @@ function WhyChooseUs() {
   }
 
   return (
-    <section className="bg-white py-24 ">
-      <div className="max-w-[1500px] mx-auto px-14">
-        <div className="text-center mb-14">
+    <section className="bg-white py-14 lg:py-24">
+      <div className="max-w-[1500px] mx-auto px-5 sm:px-8 lg:px-14">
+        <div className="text-center mb-10 lg:mb-14">
           <span className="bg-blue-50 text-blue-700 px-5 py-2 rounded-full text-sm font-bold">
             Why Choose E2E HRC
           </span>
 
-          <h2 className="text-5xl font-extrabold text-blue-700 mt-5">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-700 mt-5">
             What makes us different
           </h2>
         </div>

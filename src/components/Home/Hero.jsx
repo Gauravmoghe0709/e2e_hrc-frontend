@@ -1,6 +1,41 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import heroImgPlaceholder from "../../assets/images/hero.png";
 import { getHeroData } from "../../services/heroService";
+
+function useCountUp(target, duration, delay = 0) {
+  const [count, setCount] = useState(0);
+  const [done, setDone] = useState(false);
+  const rafRef = useRef(null);
+
+  useEffect(() => {
+    let startTime = null;
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      const animate = (timestamp) => {
+        if (cancelled) return;
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setCount(Math.floor(eased * target));
+        if (progress < 1) {
+          rafRef.current = requestAnimationFrame(animate);
+        } else {
+          setDone(true);
+        }
+      };
+      rafRef.current = requestAnimationFrame(animate);
+    }, delay);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [target, duration, delay]);
+
+  return { count, done };
+}
 
 function HeroSkeleton() {
   return (
@@ -36,6 +71,45 @@ function HeroFallback() {
         <p className="text-gray-500 text-sm">Hero content is currently unavailable. Please try again later.</p>
       </div>
     </section>
+  );
+}
+
+function AnimatedStat({ target, suffix = "+", label, containerWidth, duration = 1500, delay = 0 }) {
+  const { count, done } = useCountUp(target, duration, delay);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), delay);
+    return () => clearTimeout(t);
+  }, [delay]);
+
+  return (
+    <div style={{
+      display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
+      padding: "0px 0px 24px", width: containerWidth, height: "72px",
+      opacity: visible ? 1 : 0,
+      transform: visible ? "translateY(0)" : "translateY(10px)",
+      transition: "opacity 0.4s ease-out, transform 0.4s ease-out",
+    }}>
+      <span style={{
+        fontFamily: "Inter, sans-serif", fontWeight: 800, fontSize: "28px", lineHeight: "32px",
+        color: "#004CA5", display: "flex", alignItems: "center", height: "32px",
+        marginLeft: "-64px",
+        transform: done ? "scale(1.12)" : "scale(1)",
+        transition: "transform 0.3s ease-out",
+      }}>
+        {count}{suffix}
+      </span>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0px", width: containerWidth, height: "16px" }}>
+        <span style={{
+          fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: "12px", lineHeight: "16px",
+          display: "flex", alignItems: "center", letterSpacing: "0.5px",
+          textTransform: "uppercase", color: "#43474F",
+        }}>
+          {label}
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -167,9 +241,9 @@ function Hero() {
           {/* Stats */}
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "0px 3px 8px", gap: "10px", width: "632px", height: "95px", borderTop: "1px solid #F3F4F6", flex: "none", order: 4, boxSizing: "border-box" }}>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-start", padding: "0px", gap: "24px", width: "576.25px", height: "70px" }}>
+              <AnimatedStat target={100} suffix="+" label="CLIENTS" containerWidth="96px" duration={800} delay={100} />
+              <AnimatedStat target={100} suffix="+" label="CANDIDATES" containerWidth="131px" duration={800} delay={250} />
               {[
-                { number: "0+", label: "CLIENTS", containerWidth: "96px" },
-                { number: "0+", label: "CANDIDATES", containerWidth: "131px" },
                 { number: "25+", label: "YEARS OF EXPERIENCE", containerWidth: "138.62px" },
                 { number: "4", label: "OFFICES", containerWidth: "138.62px" },
               ].map((stat) => (

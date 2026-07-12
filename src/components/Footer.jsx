@@ -1,193 +1,293 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { MapPin, Phone, Mail, Loader2 } from 'lucide-react';
-import logoImage from '../assets/images/logo.png';
-import mapImage from '../assets/images/location.png';
-import { getFooterCompany } from '../services/footer/footerCompanyService';
-import { getFooterContact } from '../services/footer/footerContactService';
-import { getFooterNavigation } from '../services/footer/footerNavigationService';
-import { getFooterOfficeLocation } from '../services/footer/footerOfficeLocationService';
+import { FiPhone, FiMail, FiMapPin } from 'react-icons/fi';
+import mapImage from '../assets/images/map.png';
+import footerLogo from '../assets/images/e2e-logo.png';
 
-export default function FooterWithImages() {
-  const [company, setCompany] = useState(null);
-  const [contact, setContact] = useState(null);
-  const [navigation, setNavigation] = useState(null);
-  const [officeLocation, setOfficeLocation] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+const navLinks = ['Home', 'About Us', 'Our Services', 'Latest Jobs', 'Expert Blogs'];
 
-  useEffect(() => {
-    let isMounted = true;
-
-    const loadFooterData = async () => {
-      try {
-        setLoading(true);
-        setError('');
-
-        const [companyRes, contactRes, navigationRes, officeLocationRes] = await Promise.all([
-          getFooterCompany(),
-          getFooterContact(),
-          getFooterNavigation(),
-          getFooterOfficeLocation(),
-        ]);
-
-        if (!isMounted) return;
-
-        setCompany(companyRes?.data || null);
-        setContact(contactRes?.data || null);
-        setNavigation(navigationRes?.data || null);
-        setOfficeLocation(officeLocationRes?.data || null);
-      } catch (err) {
-        if (!isMounted) return;
-        setError(err.message || 'Unable to load footer content.');
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    loadFooterData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  const logoSrc = useMemo(() => company?.logo || logoImage, [company]);
-  const mapSrc = useMemo(() => officeLocation?.image || mapImage, [officeLocation]);
-  const navigationItems = useMemo(() => {
-    if (!navigation?.menuItems) {
-      return [];
-    }
-
-    return [...navigation.menuItems]
-      .filter((item) => item?.isActive !== false)
-      .sort((a, b) => (a.order || 0) - (b.order || 0));
-  }, [navigation]);
-
+export default function Footer() {
   return (
-    <footer className="bg-black text-white py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 pb-12 border-b border-gray-700">
-          
-          {/* Left Section - Logo & Description */}
-          <div className="space-y-4">
-            <div className="space-y-2">
-              {/* Logo Image */}
-              <div className="h-16 mb-4">
-                {loading ? (
-                  <div className="flex h-full items-center text-sm text-gray-400">
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Loading...
-                  </div>
-                ) : (
-                  <img 
-                    src={logoSrc} 
-                    alt={company?.description ? 'Footer company logo' : 'E2E Human Resource Consultancy'} 
-                    className="h-full object-contain"
-                  />
-                )}
+    <>
+      <style>{`
+        .footer-wrap {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 96px 98px 48px;
+          gap: 80px;
+          width: 100%;
+          background: #000000;
+          color: #ffffff;
+          box-sizing: border-box;
+        }
+        .footer-inner {
+          position: relative;
+          width: 1245px;
+          max-width: 1280px;
+          height: 259px;
+        }
+        .footer-col {
+          position: absolute;
+          top: 0;
+        }
+        .footer-col.brand {
+          left: 16px;
+          right: 973.75px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 0px;
+          gap: 31.1px;
+          height: 242.5px;
+        }
+        .footer-col.contact {
+          left: 335.25px;
+          right: 654.5px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 0px 0px 63px;
+          gap: 32px;
+          height: 251px;
+        }
+        .footer-col.nav {
+          left: 654.5px;
+          right: 335.25px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 0px 0px 35px;
+          gap: 32px;
+          height: 259px;
+        }
+        .footer-col.locations {
+          left: 973.75px;
+          right: 16px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 0px 0px 35px;
+          gap: 32px;
+          height: 333px;
+        }
+        .footer-brand-logo {
+          width: 255.25px;
+          height: 96.52px;
+          object-fit: contain;
+        }
+        .footer-brand-text-wrap {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 0px 0px 0.875px;
+          width: 255.25px;
+          max-width: 320px;
+          height: 114.88px;
+        }
+        .footer-brand-text {
+          width: 255.25px;
+          height: 114px;
+          font-family: Inter, sans-serif;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 23px;
+          display: flex;
+          align-items: center;
+          color: #DBEAFE;
+          margin: 0;
+        }
+        .footer-heading {
+          font-family: Montserrat, sans-serif;
+          font-weight: 700;
+          font-size: 18px;
+          line-height: 28px;
+          letter-spacing: 1.8px;
+          text-transform: uppercase;
+          color: #F39308;
+          margin: 0;
+        }
+        .footer-heading.locations {
+          height: 56px;
+        }
+        .footer-contact {
+          font-style: normal;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 0px;
+          gap: 24px;
+          width: 255.25px;
+        }
+        .footer-contact-row {
+          display: flex;
+          flex-direction: row;
+          align-items: flex-start;
+          padding: 0px;
+          gap: 16px;
+          width: 255.25px;
+        }
+        .footer-contact-row.center {
+          align-items: center;
+        }
+        .footer-contact-icon {
+          color: #F39308;
+          flex-shrink: 0;
+        }
+        .footer-contact-text {
+          font-family: Inter, sans-serif;
+          font-size: 14px;
+          line-height: 20px;
+          color: #DBEAFE;
+        }
+        .footer-nav-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 0px;
+          gap: 16px;
+          width: 255.25px;
+        }
+        .footer-nav-item {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 0px;
+          width: 255.25px;
+          height: 20px;
+        }
+        .footer-nav-link {
+          width: 255.25px;
+          height: 20px;
+          font-family: Inter, sans-serif;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 20px;
+          display: flex;
+          align-items: center;
+          color: #DBEAFE;
+          text-decoration: none;
+        }
+        .footer-map {
+          width: 255.25px;
+          height: 210px;
+          opacity: 1;
+        }
+        .footer-bottom {
+          border-top: 1px solid rgba(255,255,255,0.1);
+          width: 100%;
+          max-width: 1245px;
+          padding-top: 48px;
+        }
+        .footer-copy {
+          font-family: Inter, sans-serif;
+          font-size: 12px;
+          line-height: 16px;
+          text-align: center;
+          letter-spacing: 1.2px;
+          text-transform: uppercase;
+          color: rgba(191, 219, 254, 0.6);
+          margin: 0;
+        }
+        @media (max-width: 1280px) {
+          .footer-wrap {
+            padding: 60px 32px 40px;
+            gap: 48px;
+          }
+          .footer-inner {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            position: static;
+          }
+          .footer-col {
+            position: static;
+            width: calc(50% - 20px);
+            height: auto;
+            padding: 0;
+          }
+          .footer-col.brand { width: 100%; }
+          .footer-brand-logo { width: 200px; height: auto; }
+          .footer-brand-text-wrap { width: 100%; max-width: 100%; }
+          .footer-brand-text { width: 100%; max-width: 400px; }
+          .footer-contact { width: 100%; }
+          .footer-nav-list { width: 100%; }
+          .footer-map { width: 100%; height: auto; max-width: 255px; }
+        }
+        @media (max-width: 640px) {
+          .footer-wrap {
+            padding: 40px 20px 32px;
+            gap: 32px;
+          }
+          .footer-inner {
+            flex-direction: column;
+            gap: 32px;
+          }
+          .footer-col {
+            width: 100%;
+          }
+          .footer-bottom { padding-top: 24px; }
+          .footer-brand-logo { width: 180px; }
+        }
+      `}</style>
+      <footer className="footer-wrap">
+        <div className="footer-inner">
+          <div className="footer-col brand">
+            <img src={footerLogo} alt="E2E HRC Logo" className="footer-brand-logo" />
+            <div className="footer-brand-text-wrap">
+              <p className="footer-brand-text">
+                Connecting exceptional talent with exceptional businesses across the UK, Europe,
+                South Asia, and the GCC since 2007.
+              </p>
+            </div>
+          </div>
+          <div className="footer-col contact">
+            <h3 className="footer-heading">UK HEAD OFFICE</h3>
+            <address className="footer-contact">
+              <div className="footer-contact-row">
+                <FiMapPin size={16} className="footer-contact-icon" style={{ marginTop: '2px' }} aria-hidden="true" />
+                <span className="footer-contact-text">Unit 2, 1204B Stratford Road, Hall Green, Birmingham, B28 8HN, UK</span>
               </div>
-            </div>
-            
-            {/* Description */}
-            <p className="text-gray-400 text-sm leading-relaxed">
-              {loading ? 'Loading footer content...' : (company?.description || error || 'Connecting exceptional talent with exceptional businesses across the UK, Europe, South Asia, and the GCC since 2007.')}
-            </p>
+              <div className="footer-contact-row center">
+                <FiPhone size={18} className="footer-contact-icon" aria-hidden="true" />
+                <a href="tel:+441217782400" className="footer-contact-text" style={{ textDecoration: 'none' }}>
+                  +44 (0) 121 778 2400
+                </a>
+              </div>
+              <div className="footer-contact-row center">
+                <FiMail size={20} className="footer-contact-icon" aria-hidden="true" />
+                <a href="mailto:info@e2ehrc.co.uk" className="footer-contact-text" style={{ textDecoration: 'none' }}>
+                  info@e2ehrc.co.uk
+                </a>
+              </div>
+            </address>
           </div>
-
-          {/* Section 2 - Contact */}
-          <div className="space-y-6">
-            <h3 className="text-amber-400 font-bold text-lg tracking-wide">
-              {contact?.sectionTitle || 'UK HEAD OFFICE'}
-            </h3>
-            
-            <div className="space-y-4">
-              {/* Address */}
-              {contact?.address && (
-                <div className="flex gap-3">
-                  <MapPin size={20} className="text-amber-400 flex-shrink-0 mt-1" />
-                  <div className="text-sm text-gray-300">
-                    {contact.address.split('\n').map((line, index) => (
-                      <p key={`${line}-${index}`}>{line}</p>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {/* Phone */}
-              {contact?.phone && (
-                <div className="flex gap-3">
-                  <Phone size={20} className="text-amber-400 flex-shrink-0 mt-1" />
-                  <a href={`tel:${contact.phone}`} className="text-sm text-gray-300 hover:text-amber-400 transition-colors">
-                    {contact.phone}
-                  </a>
-                </div>
-              )}
-              
-              {/* Email */}
-              {contact?.email && (
-                <div className="flex gap-3">
-                  <Mail size={20} className="text-amber-400 flex-shrink-0 mt-1" />
-                  <a href={`mailto:${contact.email}`} className="text-sm text-gray-300 hover:text-amber-400 transition-colors">
-                    {contact.email}
-                  </a>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Section 3 - Navigation */}
-          <div className="space-y-6">
-            <h3 className="text-amber-400 font-bold text-lg tracking-wide">
-              {navigation?.title || 'NAVIGATION'}
-            </h3>
-            
-            <nav className="space-y-3">
-              {loading ? (
-                <p className="text-sm text-gray-400">Loading navigation...</p>
-              ) : navigationItems.length > 0 ? (
-                navigationItems.map((item) => (
-                  <a
-                    key={`${item.label}-${item.order}`}
-                    href={item.url || '#'}
-                    className="block text-gray-300 hover:text-amber-400 transition-colors text-sm"
-                  >
-                    {item.label}
-                  </a>
-                ))
-              ) : (
-                <p className="text-sm text-gray-400">No navigation links available.</p>
-              )}
+          <div className="footer-col nav">
+            <h3 className="footer-heading">NAVIGATION</h3>
+            <nav aria-label="Footer navigation">
+              <ul className="footer-nav-list">
+                {navLinks.map((link) => (
+                  <li key={link} className="footer-nav-item">
+                    <a href="#" className="footer-nav-link">{link}</a>
+                  </li>
+                ))}
+              </ul>
             </nav>
           </div>
-
-          {/* Section 4 - Office Locations Map */}
-          <div className="space-y-8">
-            <h3 className="text-amber-400 font-bold text-lg tracking-wide">
-              {officeLocation?.title || 'OUR OFFICE'}<br />LOCATIONS
-            </h3>
-            
-            {/* Office Location Image */}
-            <div className="relative h-48 overflow-hidden">
-              <img 
-                src={mapSrc}
-                alt={officeLocation?.title || 'Office locations'}
-                className="w-full h-full object-cover"
-              />
-            </div>
+          <div className="footer-col locations">
+            <h3 className="footer-heading locations">Our Office Locations</h3>
+            <img src={mapImage} alt="Office locations map" className="footer-map" />
           </div>
         </div>
-
-        {/* Copyright Section */}
-        <div className="text-center">
-          <p className="text-gray-500 text-xs tracking-wide">
-            COPYRIGHT © 2024 BY E2E HUMAN RESOURCE CONSULTANCY LTD | ALL RIGHTS RESERVED
+        <div className="footer-bottom">
+          <p className="footer-copy">
+            Copyright &copy; 2026 by E2E Human Resource Consultancy Ltd | All Rights Reserved
           </p>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 }

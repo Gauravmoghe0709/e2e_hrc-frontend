@@ -1,4 +1,4 @@
-import { User, Clock, Calendar } from "lucide-react";
+import { User, Clock, Calendar, ArrowRight } from "lucide-react";
 
 const defaultPosts = {
   featured: {
@@ -49,8 +49,19 @@ const defaultPosts = {
 function FeaturedCard({ card }) {
   return (
     <div
-      className="relative overflow-hidden rounded-2xl"
-      style={{ width: "100%", maxWidth: "532px", height: "480px" }}
+      className="relative overflow-hidden"
+      style={{
+        width: "532px",
+        height: "480px",
+        minWidth: "532px",
+        borderRadius: "20px",
+        padding: "36px",
+        boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-end",
+        alignItems: "flex-start",
+      }}
     >
       <img
         src={card.image}
@@ -61,81 +72,106 @@ function FeaturedCard({ card }) {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(0deg, rgba(0,15,40,0.93) 35%, rgba(0,15,40,0.3) 80%, transparent 100%)",
+            "linear-gradient(0deg, rgba(0, 15, 40, 0.93) 35%, rgba(0, 15, 40, 0.3) 80%, rgba(0, 0, 0, 0) 100%)",
         }}
       />
-      <div className="absolute inset-0 flex flex-col justify-end p-9">
+      <div className="relative z-10" style={{ width: "460px" }}>
+        {/* Badge */}
         <span
           style={{
             fontFamily: "Inter, sans-serif",
             fontWeight: 600,
             fontSize: "12px",
+            lineHeight: "16px",
             backgroundColor: "#004CA5",
-            color: "#ffffff",
+            color: "#FFFFFF",
             padding: "4px 12px",
-            borderRadius: "999px",
+            borderRadius: "9999px",
+            display: "inline-block",
             width: "fit-content",
+            marginBottom: "16px",
           }}
         >
           {card.badge}
         </span>
 
+        {/* Title */}
         <h3
           style={{
             fontFamily: "Poppins, sans-serif",
             fontWeight: 700,
             fontSize: "24px",
-            color: "#ffffff",
-            marginTop: "12px",
-            lineHeight: 1.3,
+            lineHeight: "33px",
+            color: "#FFFFFF",
+            margin: 0,
+            marginBottom: "12px",
+            width: "460px",
           }}
         >
           {card.title}
         </h3>
 
+        {/* Description */}
         <p
           style={{
             fontFamily: "Inter, sans-serif",
             fontWeight: 400,
             fontSize: "14px",
-            color: "rgba(255,255,255,0.7)",
-            marginTop: "8px",
-            lineHeight: 1.6,
+            lineHeight: "23px",
+            color: "rgba(255, 255, 255, 0.7)",
+            margin: 0,
+            marginBottom: "24px",
+            width: "460px",
           }}
         >
           {card.description}
         </p>
 
-        <div className="flex items-center justify-between" style={{ marginTop: "16px" }}>
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5" style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px" }}>
+        {/* Author + Date row */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "460px",
+            marginBottom: "16px",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "12px" }}>
+            <span style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "6px", color: "rgba(255,255,255,0.6)", fontSize: "12px", fontFamily: "Inter, sans-serif", fontWeight: 400, lineHeight: "16px" }}>
               <User size={12} />
               {card.author}
             </span>
-            <span className="flex items-center gap-1.5" style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px" }}>
+            <span style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "6px", color: "rgba(255,255,255,0.6)", fontSize: "12px", fontFamily: "Inter, sans-serif", fontWeight: 400, lineHeight: "16px" }}>
               <Clock size={12} />
               {card.readTime}
             </span>
           </div>
-          <span className="flex items-center gap-1.5" style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px" }}>
+          <span style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "6px", color: "rgba(255,255,255,0.6)", fontSize: "12px", fontFamily: "Inter, sans-serif", fontWeight: 400, lineHeight: "16px" }}>
             <Calendar size={12} />
             {card.date}
           </span>
         </div>
 
+        {/* Read More */}
         <a
           href={card.link}
           style={{
             fontFamily: "Poppins, sans-serif",
             fontWeight: 600,
             fontSize: "12px",
+            lineHeight: "16px",
             color: "#C8D96F",
-            marginTop: "16px",
             textDecoration: "none",
-            display: "inline-block",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: "6px",
           }}
         >
-          Read More →
+          Read More
+          <ArrowRight size={13} />
         </a>
       </div>
     </div>
@@ -145,67 +181,80 @@ function FeaturedCard({ card }) {
 function SmallCard({ card }) {
   return (
     <div
-      className="flex flex-col sm:flex-row rounded-2xl overflow-hidden"
       style={{
-        backgroundColor: "#F8FAFC",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "flex-start",
         gap: "20px",
+        width: "532px",
+        minHeight: "130px",
+        backgroundColor: "#F8FAFC",
+        borderRadius: "16px",
+        flexShrink: 0,
       }}
     >
-      <img
-        src={card.image}
-        alt={card.title}
-        className="sm:w-[144px] w-full"
-        style={{
-          height: "144px",
-          objectFit: "cover",
-          flexShrink: 0,
-          display: "block",
-        }}
-      />
+      {/* Image */}
+      <div style={{ width: "144px", height: "130px", flexShrink: 0, borderRadius: "16px 0 0 16px", overflow: "hidden" }}>
+        <img
+          src={card.image}
+          alt={card.title}
+          style={{ width: "144px", height: "130px", objectFit: "cover", display: "block" }}
+        />
+      </div>
+
+      {/* Content */}
       <div
-        className="flex flex-col justify-center pt-0 pr-5 pb-5 pl-5 sm:pt-5 sm:pr-5 sm:pb-5 sm:pl-0"
         style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          padding: "20px 20px 20px 0",
           gap: "8px",
           flex: 1,
           minWidth: 0,
         }}
       >
+        {/* Badge */}
         <span
           style={{
             fontFamily: "Inter, sans-serif",
             fontWeight: 600,
             fontSize: "12px",
+            lineHeight: "16px",
             backgroundColor: card.badgeBg,
             color: card.badgeColor,
             padding: "4px 10px",
-            borderRadius: "999px",
+            borderRadius: "9999px",
             width: "fit-content",
           }}
         >
           {card.badge}
         </span>
 
+        {/* Title */}
         <h4
           style={{
             fontFamily: "Poppins, sans-serif",
             fontWeight: 700,
             fontSize: "14px",
+            lineHeight: "19px",
             color: "#004CA5",
-            lineHeight: 1.4,
             margin: 0,
           }}
         >
           {card.title}
         </h4>
 
-        <div className="flex items-center gap-3" style={{ color: "#64748B", fontSize: "12px" }}>
-          <span className="flex items-center gap-1">
-            <Clock size={12} />
+        {/* Meta */}
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "12px", color: "#64748B", fontSize: "12px", fontFamily: "Inter, sans-serif", fontWeight: 400, lineHeight: "16px" }}>
+          <span style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "4px" }}>
+            <Clock size={11} />
             {card.readTime}
           </span>
           <span>·</span>
-          <span className="flex items-center gap-1">
-            <Calendar size={12} />
+          <span style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "4px" }}>
+            <Calendar size={11} />
             {card.date}
           </span>
         </div>
@@ -218,72 +267,136 @@ function BlogSection({ posts = defaultPosts }) {
   const { featured, cards } = posts;
 
   return (
-    <section className="bg-white px-6 sm:px-8 lg:px-[32px] xl:pl-[124px]">
-      <div className="mx-auto" style={{ maxWidth: "1440px" }}>
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between" style={{ marginBottom: "40px" }}>
-          <div>
+    <section
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        padding: "13px 0 37px",
+        width: "100%",
+        background: "#FFFFFF",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          padding: "0 32px 0 124px",
+          width: "100%",
+          maxWidth: "1440px",
+        }}
+      >
+        {/* Header Row */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+            width: "100%",
+            height: "84px",
+          }}
+        >
+          {/* Left - Badge + Heading */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "0" }}>
             <span
               style={{
                 fontFamily: "Inter, sans-serif",
                 fontWeight: 600,
                 fontSize: "12px",
+                lineHeight: "16px",
                 backgroundColor: "#E8EDF5",
                 color: "#004CA5",
-                padding: "6px 16px",
-                borderRadius: "999px",
-                display: "inline-block",
+                padding: "6px 12px",
+                borderRadius: "9999px",
+                display: "inline-flex",
+                alignItems: "center",
+                width: "108.72px",
+                justifyContent: "center",
               }}
             >
               Latest Blog
             </span>
-
             <h2
               style={{
                 fontFamily: "Poppins, sans-serif",
                 fontWeight: 800,
                 fontSize: "36px",
+                lineHeight: "40px",
                 color: "#004CA5",
-                marginTop: "12px",
-                lineHeight: 1.2,
+                margin: 0,
+                marginTop: "0",
+                width: "793px",
               }}
             >
               Career Growth Strategies for Professionals
             </h2>
           </div>
 
+          {/* Right - View All Button */}
           <button
             style={{
-              fontFamily: "Inter, sans-serif",
-              fontWeight: 600,
-              fontSize: "14px",
-              border: "1.5px solid #004CA5",
-              color: "#004CA5",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              padding: "12px 24px",
+              gap: "8px",
+              border: "1.6px solid #004CA5",
+              borderRadius: "9999px",
               backgroundColor: "transparent",
-              padding: "10px 24px",
-              borderRadius: "999px",
               cursor: "pointer",
-              whiteSpace: "nowrap",
+              boxSizing: "border-box",
               flexShrink: 0,
-              marginTop: "16px",
             }}
           >
-            View All Articles →
+            <span
+              style={{
+                fontFamily: "Poppins, sans-serif",
+                fontWeight: 600,
+                fontSize: "14px",
+                lineHeight: "20px",
+                color: "#004CA5",
+              }}
+            >
+              View All Articles
+            </span>
+            <ArrowRight size={15} color="#004CA5" />
           </button>
         </div>
 
-        <div className="flex flex-col xl:flex-row items-start gap-10 xl:gap-[24px]">
-          <FeaturedCard card={featured} />
+        {/* Content Container */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            padding: "48px 0 0 0",
+            width: "100%",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "row", width: "100%", height: "480px", position: "relative" }}>
+            {/* Featured Card */}
+            <FeaturedCard card={featured} />
 
-          <div
-            className="flex flex-col w-full"
-            style={{
-              maxWidth: "532px",
-              gap: "41px",
-            }}
-          >
-            {cards.map((card, i) => (
-              <SmallCard key={i} card={card} />
-            ))}
+            {/* Small Cards Column */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                gap: "41px",
+                position: "absolute",
+                left: "556px",
+                top: 0,
+                width: "532px",
+                height: "480px",
+              }}
+            >
+              {cards.map((card, i) => (
+                <SmallCard key={i} card={card} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

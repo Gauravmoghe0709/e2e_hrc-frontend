@@ -5,9 +5,7 @@ import Hero from '../components/employer/Hero'
 import HowWeWork from '../components/employer/HowWeWork'
 import Sectors from "../components/Home/Sectors"
 import FAQSection from '../components/employer/FAQSection'
-import Testimonials from '../components/AboutUs/Testimonials'
-
-
+import Testimonials from '../components/employer/Testimonials'
 
 const Employer = () => {
   return (
