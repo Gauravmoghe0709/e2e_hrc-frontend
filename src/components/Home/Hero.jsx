@@ -2,49 +2,31 @@ import { useState, useEffect } from "react";
 import heroImgPlaceholder from "../../assets/images/hero.png";
 import { getHeroData } from "../../services/heroService";
 
-/* ─── Skeleton ─────────────────────────────────────────────────────────── */
 function HeroSkeleton() {
   return (
-    <section className="bg-[#f4f7fb] min-h-[680px] lg:min-h-[760px]">
-      <div className="max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-14 py-10 lg:py-12 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-        {/* Left skeleton */}
-        <div className="animate-pulse space-y-5">
-          <div className="h-8 bg-gray-200 rounded-full w-2/3"></div>
-          <div className="space-y-3">
-            <div className="h-12 bg-gray-200 rounded-lg w-full"></div>
-            <div className="h-12 bg-gray-200 rounded-lg w-4/5"></div>
-          </div>
-          <div className="space-y-2">
-            <div className="h-5 bg-gray-200 rounded w-full"></div>
-            <div className="h-5 bg-gray-200 rounded w-11/12"></div>
-            <div className="h-5 bg-gray-200 rounded w-3/4"></div>
-          </div>
-          <div className="flex gap-4 pt-2">
-            <div className="h-14 bg-gray-200 rounded-full w-40"></div>
-            <div className="h-14 bg-gray-200 rounded-full w-48"></div>
-          </div>
-          <div className="border-t border-gray-200 pt-6 grid grid-cols-4 gap-4">
-            {[1,2,3,4].map(i => (
-              <div key={i} className="space-y-1">
-                <div className="h-8 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-4 bg-gray-200 rounded w-full"></div>
-              </div>
-            ))}
-          </div>
+    <section className="relative overflow-hidden" style={{ background: "#FFFFFF" }}>
+      <div className="animate-pulse mx-auto" style={{ maxWidth: "1440px", padding: "2px 53.5px 79px", height: "638px" }}>
+        <div className="h-6 bg-gray-200 rounded-full w-72 mt-16" />
+        <div className="space-y-3 mt-6">
+          <div className="h-14 bg-gray-200 rounded-lg w-3/4" />
+          <div className="h-14 bg-gray-200 rounded-lg w-2/3" />
         </div>
-        {/* Right skeleton — image */}
-        <div className="animate-pulse hidden lg:flex justify-end">
-          <div className="w-full max-w-[760px] aspect-[4/3] bg-gray-200 rounded-2xl"></div>
+        <div className="space-y-2 mt-6">
+          <div className="h-5 bg-gray-200 rounded w-1/2" />
+          <div className="h-5 bg-gray-200 rounded w-2/5" />
+        </div>
+        <div className="flex gap-4 pt-2 mt-6">
+          <div className="h-13 bg-gray-200 rounded-full w-48" />
+          <div className="h-13 bg-gray-200 rounded-full w-48" />
         </div>
       </div>
     </section>
   );
 }
 
-/* ─── Error / Fallback ─────────────────────────────────────────────────── */
 function HeroFallback() {
   return (
-    <section className="bg-[#f4f7fb] min-h-[320px] flex items-center justify-center">
+    <section className="min-h-[320px] flex items-center justify-center" style={{ background: "#FFFFFF" }}>
       <div className="text-center py-20 px-6">
         <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mx-auto mb-4">
           <svg className="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,7 +39,6 @@ function HeroFallback() {
   );
 }
 
-/* ─── Main Hero Component ───────────────────────────────────────────────── */
 function Hero() {
   const [heroData, setHeroData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -69,6 +50,7 @@ function Hero() {
       try {
         const res = await getHeroData();
         if (res && res.data) {
+          console.log(res.data)
           setHeroData(res.data);
         }
       } catch {
@@ -87,71 +69,19 @@ function Hero() {
   const imageSrc = heroData.heroImage || heroImgPlaceholder;
 
   return (
-    <section className="bg-[#f4f7fb] min-h-[680px] lg:min-h-[760px]">
-      <div className="max-w-[1500px] mx-auto px-4 sm:px-8 lg:px-14 py-10 lg:py-12 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+    <section className="relative" style={{ width: "100%", maxWidth: "1440px", height: "638px", margin: "0 auto", padding: "2px 53.5px 79px", boxSizing: "border-box", zIndex: 2 }}>
 
-        {/* ── Left column: Text content ── */}
-        <div>
-          {/* Subtitle badge */}
-          {heroData.subtitle && (
-            <span className="bg-lime-200 text-green-700 px-4 py-2 rounded-full text-xs sm:text-sm font-bold inline-block">
-              ● {heroData.subtitle}
-            </span>
-          )}
+      <div style={{ position: "relative", width: "100%", maxWidth: "1333px", height: "636px" }}>
 
-          {/* Title */}
-          <h1 className="text-4xl sm:text-5xl lg:text-[58px] lg:leading-[64px] font-extrabold mt-6 lg:mt-10 text-blue-700 whitespace-pre-line">
-            {heroData.title}
-          </h1>
+        {/* ── Right column: Image Content ── */}
+        <div style={{ position: "absolute", height: "572px", left: "685px", right: "16px", top: "64px" }}>
+          {/* Decorative Background */}
+          <div style={{ position: "absolute", width: "519px", height: "519px", left: "calc(50% - 519px/2 - 18px)", top: "calc(50% - 519px/2 - 54.5px)", background: "#C2D760", opacity: 0.33, borderRadius: "9999px" }} />
+          <div style={{ position: "absolute", width: "419px", height: "419px", left: "calc(50% - 419px/2)", top: "calc(50% - 419px/2 - 40.5px)", boxSizing: "border-box", border: "1px dashed #C2D760", borderRadius: "9999px" }} />
 
-          {/* Description */}
-          <p className="text-base sm:text-lg lg:text-xl text-gray-700 mt-4 lg:mt-6 max-w-xl leading-7 lg:leading-9">
-            {heroData.description}
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap gap-4 mt-6 lg:mt-8">
-            {heroData.buttonText && (
-              <a
-                href={heroData.buttonLink || "#"}
-                className="inline-block bg-orange-400 hover:bg-orange-500 active:bg-orange-600 text-white px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-bold transition-colors shadow-md shadow-orange-200"
-              >
-                {heroData.buttonText} →
-              </a>
-            )}
-            <button className="border-2 border-blue-700 text-blue-700 hover:bg-blue-50 active:bg-blue-100 px-8 sm:px-10 py-3.5 sm:py-4 rounded-full font-bold transition-colors">
-              Find Opportunities
-            </button>
-          </div>
-
-          {/* Stats Row */}
-          <div className="border-t border-gray-200 mt-8 pt-6 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-2xl">
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-blue-700">0+</h3>
-              <p className="text-xs sm:text-sm uppercase text-gray-500 mt-0.5">Clients</p>
-            </div>
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-blue-700">0+</h3>
-              <p className="text-xs sm:text-sm uppercase text-gray-500 mt-0.5">Candidates</p>
-            </div>
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-blue-700">25+</h3>
-              <p className="text-xs sm:text-sm uppercase text-gray-500 mt-0.5">Years of Experience</p>
-            </div>
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-blue-700">4</h3>
-              <p className="text-xs sm:text-sm uppercase text-gray-500 mt-0.5">Offices</p>
-            </div>
-          </div>
-        </div>
-
-        {/* ── Right column: Hero Image ── */}
-        <div className="flex justify-center lg:justify-end mt-6 lg:mt-0">
-          {/* Wrapper reserves space to prevent layout shift */}
-          <div className="relative w-full max-w-[560px] lg:max-w-[760px] aspect-[4/3]">
-            {/* Blur placeholder while image loads */}
+          <div style={{ position: "absolute", width: "697px", left: "calc(50% - 697px/2)", top: "0", bottom: "14.16%" }}>
             {!imgLoaded && (
-              <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-2xl" />
+              <div className="absolute inset-0 bg-gray-100 animate-pulse rounded-2xl" />
             )}
             <img
               src={imageSrc}
@@ -160,9 +90,102 @@ function Hero() {
               decoding="async"
               onLoad={() => setImgLoaded(true)}
               onError={(e) => { e.target.src = heroImgPlaceholder; setImgLoaded(true); }}
-              className={`w-full h-full object-contain rounded-2xl transition-opacity duration-500 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", opacity: imgLoaded ? 1 : 0, transition: "opacity 0.5s" }}
             />
           </div>
+        </div>
+
+        {/* ── Left column: Text Content ── */}
+        <div style={{ position: "absolute", height: "572px", left: "5px", right: "696px", top: "64px", display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0px 0px 41px", gap: "24px" }}>
+
+          {/* Badge */}
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", padding: "4px 12px", gap: "6px", width: "291.94px", height: "24px", background: "#C9DB82", borderRadius: "9999px", flex: "none", order: 0 }}>
+            <div style={{ width: "12px", height: "12px", borderRadius: "9999px", background: "#166534", flex: "none", order: 0 }} />
+            <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 600, fontSize: "12px", lineHeight: "16px", color: "#166534", flex: "none", order: 1 }}>
+              {heroData.title || "Connecting Talent. Building Futures."}
+            </span>
+          </div>
+
+          {/* Heading */}
+          <div style={{ width: "632px", display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0px", flex: "none", order: 1 }}>
+            <h1 style={{ margin: 0, fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 800, fontSize: "60px", lineHeight: "60px", letterSpacing: "0px", color: "#004CA5", width: "632px", height: "120px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", flex: "none", order: 0, alignSelf: "stretch", flexGrow: 0 }}>
+              <span>Connecting Talent.</span>
+              <span>Building <span style={{ color: "#F39308" }}>Futures.</span></span>
+            </h1>
+          </div>
+
+          {/* Description */}
+          <div style={{ width: "632px", height: "88px", display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0px", flex: "none", order: 2 }}>
+            <p style={{ margin: 0, fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 400, fontSize: "18px", lineHeight: "29px", color: "#000000", width: "514px", height: "88px" }}>
+              Helping UK employers find exceptional talent and helping candidates discover opportunities to grow and thrive in their careers.
+            </p>
+          </div>
+
+          {/* CTA Buttons */}
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-start", padding: "8px 0px", gap: "16px", width: "632px", height: "68px", flex: "none", order: 3 }}>
+            <a
+              href={heroData.buttonLink || "#"}
+              style={{
+                display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",
+                padding: "12px 32px 12px 28px", gap: "8px",
+                width: "200px", height: "52px",
+                background: "#F39308", borderRadius: "9999px",
+                fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 600,
+                fontSize: "16px", lineHeight: "24px", color: "#FFFFFF",
+                textDecoration: "none",
+              }}
+            >
+              Hire Talent
+              <span style={{ marginLeft: "4px" }}>→</span>
+            </a>
+            <button
+              style={{
+                display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center",
+                padding: "12px 32px",
+                width: "200px", height: "52px",
+                background: "transparent", border: "2px solid #004CA5", borderRadius: "9999px",
+                cursor: "pointer",
+              }}
+            >
+              <span style={{
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 600,
+                fontStyle: "normal",
+                fontSize: "16px",
+                lineHeight: "24px",
+                letterSpacing: "0px",
+                textAlign: "center",
+                color: "#004CA5",
+                width: "145px",
+                height: "24px",
+                whiteSpace: "nowrap",
+              }}>
+                Find Opportunities
+              </span>
+            </button>
+          </div>
+
+          {/* Stats */}
+          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "0px 3px 8px", gap: "10px", width: "632px", height: "95px", borderTop: "1px solid #F3F4F6", flex: "none", order: 4, boxSizing: "border-box" }}>
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-start", padding: "0px", gap: "24px", width: "576.25px", height: "70px" }}>
+              {[
+                { value: "0+", label: "CLIENTS" },
+                { value: "0+", label: "CANDIDATES" },
+                { value: "25+", label: "YEARS OF EXPERIENCE" },
+                { value: "4", label: "OFFICES" },
+              ].map((stat) => (
+                <div key={stat.label} style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "0px 0px 24px", width: stat.label === "CLIENTS" ? "96px" : "138.62px", height: "72px" }}>
+                  <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 700, fontSize: "24px", lineHeight: "32px", color: "#004CA5" }}>
+                    {stat.value}
+                  </span>
+                  <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 400, fontSize: "12px", lineHeight: "16px", letterSpacing: "0.3px", textTransform: "uppercase", color: "#000000", marginTop: "8px" }}>
+                    {stat.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
 
       </div>

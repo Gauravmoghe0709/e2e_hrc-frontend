@@ -121,7 +121,7 @@ function Sectors() {
         ) : (
           <div
             ref={scrollRef}
-            className="mt-12 flex gap-6 overflow-x-auto scroll-smooth pb-2"
+            className="mt-12 flex gap-6 overflow-x-auto scroll-smooth pb-2 no-scrollbar"
           >
             {services.map((service) => (
               <div
@@ -133,7 +133,7 @@ function Sectors() {
                     <img
                       src={service.image}
                       alt={service.title}
-                      className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-110"
+                      className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-110 bg-[linear-gradient(0deg,rgba(0,15,40,0.9)_30%,rgba(0,15,40,0.35)_100%)];"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-[#0f4c81] via-[#2b6cb0] to-[#77c0f4] text-center text-sm font-semibold text-white">

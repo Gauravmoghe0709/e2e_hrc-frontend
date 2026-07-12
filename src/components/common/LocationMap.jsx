@@ -43,12 +43,13 @@ const locations = [
 
 function LocationMap() {
     return (
-        <div className="mt-12 overflow-hidden rounded-3xl shadow-lg">
+        <div className="relative mt-12 overflow-hidden rounded-3xl shadow-lg" style={{ zIndex: 1 }}>
             <MapContainer
                 center={[22.9734, 78.6569]}
                 zoom={5}
                 scrollWheelZoom={false}
                 className="h-[500px] w-full"
+                style={{ zIndex: 1 }}
             >
                 <TileLayer
                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"

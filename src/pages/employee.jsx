@@ -5,6 +5,7 @@ import EmployeeJourneyServices from '../components/employee/EmployeeJourneyServi
 import TestimonialsCarousel from '../components/employee/TestimonialsCarousel';
 import WhyChooseE2E from '../components/employee/WhyChooseE2E';
 import testimonialsbg from "../assets/images/Testimonialbg.png";
+import Sectors from "../components/Home/Sectors"
 import './Employee.css';
 
 import sectorConstruction from '../assets/images/sectors/construction.jpg';
@@ -15,30 +16,33 @@ import sectorHealthcare from '../assets/images/sectors/healthcare.jpg';
 import sectorIT from '../assets/images/sectors/it technology.jpg';
 import sectorLogistics from '../assets/images/sectors/logistics.jpg';
 import sectorManufacturing from '../assets/images/sectors/manuifacturing.jpg';
-import FAQAndCTA from '../components/employer/FAQSection';
+import FAQAndCTA from '../components/employee/FAQSection';
+import union from "../assets/Union.png"
+import ford from "../assets/disnep1.png"
 
 const testimonialsData = [
   {
     title: 'Efficient and Effective Hiring Process!',
     quote: "The efficiency of Applyfier's hiring process is commendable. The platform's intuitive interface, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
-    logo: '/images/employee/Union.png',
+    logo: union,
     alt: 'Ford',
   },
   {
     title: 'Top-Notch Talent at Our Fingertips!',
     quote: "As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
-    logo: '/images/employee/disnep1.png',
+    logo: ford,
     alt: 'Disney',
   },
   {
     title: 'Top-Notch Talent at Our Fingertips!',
     quote: "As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
-    logo: '/images/employee/disnep1.png',
+    logo: ford,
     alt: 'Disney',
   },
 ];
 
 import { useRef } from 'react';
+
 
 export default function Employee() {
   const trackRef = useRef(null);
@@ -63,7 +67,7 @@ export default function Employee() {
       {/* ===== E. WHAT MAKES US DIFFERENT ===== */}
       <WhyChooseE2E />
 
-      {/* ===== F. DEEP EXPERTISE ACROSS 25+ SECTORS ===== */}
+      {/* ===== F. DEEP EXPERTISE ACROSS 25+ SECTORS ===== *
       <section className="industries-section">
         <div className="industries-header">
           <div className="industries-header-left">
@@ -109,7 +113,8 @@ export default function Employee() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
+      <Sectors />
 
       <FAQAndCTA />
 

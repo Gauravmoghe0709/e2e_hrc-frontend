@@ -10,7 +10,7 @@ const normalize = (resp) => {
 
 export const getWhyChooseE2E = async () => {
   try {
-    const res = await axios.get(`${API_BASE}/why-choose`);
+    const res = await axios.get(`${API_BASE}/about/why-choose`);
     return normalize(res);
   } catch (err) {
     if (err.response && err.response.status === 404) return { data: [] };
@@ -21,3 +21,4 @@ export const getWhyChooseE2E = async () => {
 export default {
   getWhyChooseE2E,
 };
+

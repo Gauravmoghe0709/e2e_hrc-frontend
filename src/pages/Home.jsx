@@ -12,8 +12,8 @@ const Sectors = lazy(() => import("../components/Home/Sectors"));
 const Process = lazy(() => import("../components/Home/Process"));
 const WhyChooseUs = lazy(() => import("../components/Home/WhyChooseUs"))
 const Locations = lazy(() => import("../components/Home/Locations"));
-const Blogs = lazy(() => import("../components/Home/Blogs"));
 const ContactSection = lazy(() => import("../components/Home/ContactSection"));
+const Blogsection = lazy(()=> import ("../components/Home/Blogsection"))
 
 
 
@@ -54,9 +54,9 @@ function Home() {
         </Suspense>
       </LazySection>
 
-      <LazySection height={500}>
+        <LazySection height={500}>
         <Suspense fallback={<Loading />}>
-          <Blogs />
+          <Blogsection></Blogsection>
         </Suspense>
       </LazySection>
 
@@ -65,6 +65,9 @@ function Home() {
           <ContactSection />
         </Suspense>
       </LazySection>
+      
+    
+      
 
       <Footer />
     </>

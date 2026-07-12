@@ -13,8 +13,8 @@ function Navbar() {
     { name: "Employer", path: "/employer" },
     { name: "Workforce Solutions", path: "/workforce-solutions" },
     { name: "Employee", path: "/employee" },
-    { name: "Become a Partner", path: "/become-a-partner" },
-    { name: "Blogs", path: "/blogs" },
+    { name: "Become a Partner", path: "/become-partner" },
+    { name: "Blogs", path: "/blog" },
     { name: "Contact Us", path: "/contact-us" },
   ];
 
@@ -26,7 +26,7 @@ function Navbar() {
   return (
     <>
       <AnnouncementBar />
-      <nav className="sticky top-0 z-50 bg-white shadow-sm">
+      <nav className="sticky top-0 z-[9999] bg-white shadow-sm">
         <div className="mx-auto flex max-w-[1500px] items-center justify-between px-4 py-4 sm:px-6 lg:px-14">
           <NavLink to="/" onClick={() => setIsOpen(false)}>
             <img src={logo} alt="E2E HRC" className="h-10 sm:h-12" />
