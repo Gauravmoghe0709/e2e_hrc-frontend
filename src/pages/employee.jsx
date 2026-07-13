@@ -15,7 +15,7 @@ import sectorHealthcare from '../assets/images/sectors/healthcare.jpg';
 import sectorIT from '../assets/images/sectors/it technology.jpg';
 import sectorLogistics from '../assets/images/sectors/logistics.jpg';
 import sectorManufacturing from '../assets/images/sectors/manuifacturing.jpg';
-import FAQAndCTA from '../components/employer/FAQSection';
+import FAQAndCTA from '../components/employee/FAQSection';
 
 const testimonialsData = [
   {

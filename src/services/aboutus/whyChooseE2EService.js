@@ -10,10 +10,12 @@ const normalize = (resp) => {
 
 export const getWhyChooseE2E = async () => {
   try {
-    const res = await axios.get(`${API_BASE}/why-choose`);
+    const res = await axios.get(`${API_BASE}/about/why-choose`);
     return normalize(res);
   } catch (err) {
-    if (err.response && err.response.status === 404) return { data: [] };
+    if (err.response && err.response.status === 404) {
+      return { data: { section: null, cards: [] } };
+    }
     throw err;
   }
 };

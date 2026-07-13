@@ -20,6 +20,7 @@ export default function Testimonials() {
     try {
       setIsLoading(true);
       const data = await getPublicTestimonials();
+      console.log(data)
       
       if (data && data.section && data.cards) {
         setSection(data.section);

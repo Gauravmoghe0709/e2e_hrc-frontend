@@ -1,42 +1,15 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import backgroundImg from "../../assets/images/Career Growth imgs/background employerr.png";
 import fordLogo from "../../assets/images/Career Growth imgs/ford 1.png";
-import disneyLogo from "../../assets/images/Career Growth imgs/disnep1.png";
+import { getEmployerTestimonials } from "../../services/employer/employerTestimonialsService";
 
-const testimonials = [
-  {
-    id: 1,
-    title: "Efficient and Effective Hiring Process!",
-    quote:
-      "The efficiency of Applyfier's hiring process is commendable. The platform's intuitive interface, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
-    brand: "Ford",
-    logo: fordLogo,
-  },
-  {
-    id: 2,
-    title: "Top-Notch Talent at Our Fingertips!",
-    quote:
-      "As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
-    brand: "Disney",
-    logo: disneyLogo,
-  },
-  {
-    id: 3,
-    title: "Top-Notch Talent at Our Fingertips!",
-    quote:
-      "As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
-    brand: "Disney",
-    logo: disneyLogo,
-  },
-  {
-    id: 4,
-    title: "Efficient and Effective Hiring Process!",
-    quote:
-      "The efficiency of Applyfier's hiring process is commendable. The platform's intuitive interface, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
-    brand: "Ford",
-    logo: fordLogo,
-  },
-];
+// Default fallback section for when API is not available
+const DEFAULT_SECTION = {
+  badgeText: "Testimonials",
+  sectionTitle: "Trusted by Businesses Worldwide",
+  sectionDescription:
+    "Discover the stories and experiences of individuals and companies who have found success and excellence through Applyfier",
+};
 
 const ChevronLeftIcon = () => (
   <svg width="9" height="16" viewBox="0 0 9 16" fill="none">
@@ -51,6 +24,8 @@ const ChevronRightIcon = () => (
 );
 
 function TestimonialCard({ t }) {
+  const logoSrc = t.companyLogo || fordLogo;
+  
   return (
     <div
       className="testimonial-card"
@@ -97,7 +72,7 @@ function TestimonialCard({ t }) {
               margin: 0,
             }}
           >
-            {t.quote}
+            {t.reviewText}
           </p>
         </div>
         <div
@@ -108,8 +83,15 @@ function TestimonialCard({ t }) {
             transform: "rotate(0.27deg)",
           }}
         />
-        <div style={{ display: "flex", alignItems: "center", justifyContent: t.brand === "Ford" ? "center" : "flex-start" }}>
-          <img src={t.logo} alt={t.brand} style={{ height: 40, objectFit: "contain" }} />
+        <div style={{ display: "flex", alignItems: "center", justifyContent: t.companyName === "Ford" ? "center" : "flex-start" }}>
+          <img 
+            src={logoSrc} 
+            alt={t.companyName || "Company"} 
+            style={{ height: 40, objectFit: "contain" }}
+            onError={(e) => {
+              e.target.src = fordLogo;
+            }}
+          />
         </div>
       </div>
     </div>
@@ -117,13 +99,47 @@ function TestimonialCard({ t }) {
 }
 
 export default function Testimonials() {
-  const doubled = [...testimonials, ...testimonials];
+  const [testimonials, setTestimonials] = useState([]);
+  const [section, setSection] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const trackRef = useRef(null);
   const scrollOffset = useRef(0);
   const animRef = useRef(null);
   const pausedRef = useRef(false);
 
+  // Fetch testimonials on component mount
   useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getEmployerTestimonials();
+
+        if (data && data.data) {
+          setSection(data.data.section || DEFAULT_SECTION);
+          setTestimonials(data.data.cards || []);
+        } else {
+          setSection(DEFAULT_SECTION);
+          setTestimonials([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch testimonials:", err);
+        setError(err);
+        setSection(DEFAULT_SECTION);
+        setTestimonials([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
+  // Animation loop - only runs when testimonials are available
+  useEffect(() => {
+    if (testimonials.length === 0 || loading) return;
+
     let lastTime = performance.now();
     const animate = (time) => {
       if (trackRef.current && !pausedRef.current) {
@@ -141,7 +157,7 @@ export default function Testimonials() {
     };
     animRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animRef.current);
-  }, []);
+  }, [testimonials, loading]);
 
   const scroll = (dir) => {
     if (!trackRef.current) return;
@@ -194,7 +210,7 @@ export default function Testimonials() {
                   color: "#F39308",
                 }}
               >
-                Testimonials
+                {section?.badgeText || DEFAULT_SECTION.badgeText}
               </span>
             </div>
             <h2
@@ -207,7 +223,7 @@ export default function Testimonials() {
                 margin: 0,
               }}
             >
-              Trusted by Businesses Worldwide
+              {section?.sectionTitle || DEFAULT_SECTION.sectionTitle}
             </h2>
           </div>
 
@@ -225,7 +241,7 @@ export default function Testimonials() {
                 alignItems: "flex-end",
               }}
             >
-              Discover the stories and experiences of individuals and companies who have found success and excellence through Applyfier
+              {section?.sectionDescription || DEFAULT_SECTION.sectionDescription}
             </p>
             <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 10, flex: 1 }}>
               <button
@@ -271,9 +287,69 @@ export default function Testimonials() {
         {/* Continuous scroller */}
         <div className="testimonials-track-wrapper">
           <div className="testimonials-track" ref={trackRef}>
-            {doubled.map((t, i) => (
-              <TestimonialCard key={`${t.id}-${i}`} t={t} />
-            ))}
+            {/* Show loading state */}
+            {loading && (
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minHeight: 388,
+                  color: "#FFFFFF",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                Loading testimonials...
+              </div>
+            )}
+
+            {/* Show error state */}
+            {error && !loading && (
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minHeight: 388,
+                  color: "#FFFFFF",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                Failed to load testimonials. Please try again later.
+              </div>
+            )}
+
+            {/* Show empty state */}
+            {!loading && !error && testimonials.length === 0 && (
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minHeight: 388,
+                  color: "#FFFFFF",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                No testimonials available at this time.
+              </div>
+            )}
+
+            {/* Render testimonial cards */}
+            {!loading && testimonials.length > 0 && (
+              <>
+                {testimonials.map((t, i) => (
+                  <TestimonialCard key={`${t._id || i}-${i}`} t={t} />
+                ))}
+                {/* Repeat for continuous loop effect */}
+                {testimonials.map((t, i) => (
+                  <TestimonialCard key={`${t._id || i}-repeat-${i}`} t={t} />
+                ))}
+              </>
+            )}
           </div>
         </div>
       </div>

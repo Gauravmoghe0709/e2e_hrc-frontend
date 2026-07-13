@@ -4,7 +4,7 @@ import Footer from '../components/Footer'
 import Hero from '../components/WorkforceSolution/Hero'
 import WorkforceSolutions from '../components/WorkforceSolution/WorkforceSolutions'
 import HowweWork from '../components/WorkforceSolution/HowweWork'
-import FAQAndCTA from '../components/employer/FAQSection'
+import FAQAndCTA from '../components/WorkforceSolution/FAQAndCTA'
 import Testimonials from '../components/WorkforceSolution/Testimonials'
 
 

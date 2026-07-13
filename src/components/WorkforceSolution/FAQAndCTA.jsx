@@ -1,118 +1,242 @@
-import { useState } from 'react';
-import { FiPlus, FiX, FiUsers, FiGlobe, FiZap } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
+import { ChevronDown, Users, Globe, User } from 'lucide-react';
 import { useScrollReveal } from '../common/useScrollReveal';
-
-const faqs = [
-  {
-    q: 'What types of workforce solutions do you offer?',
-    a: 'We offer a full spectrum of workforce solutions including permanent recruitment, contract and temporary staffing, executive search, RPO, and workforce consultancy. Our services are tailored to meet the unique needs of each client across multiple industries.',
-  },
-  {
-    q: 'Do you provide international recruitment services?',
-    a: 'Yes. We source and place talent across the UK, Europe, GCC, and Asia. Our global network allows us to connect organisations with qualified professionals regardless of geography or sector.',
-  },
-  {
-    q: 'Can you support high-volume hiring?',
-    a: 'Absolutely. Through our Recruitment Process Outsourcing (RPO) model, we can scale our resources to support large-scale hiring campaigns efficiently and cost-effectively, without compromising on candidate quality.',
-  },
-  {
-    q: 'Do you provide temporary and contract staffing?',
-    a: 'Yes. We specialise in flexible staffing arrangements to cover short-term projects, seasonal demand, and interim roles. Our pre-vetted talent pool means we can mobilise quickly to meet your deadlines.',
-  },
-  {
-    q: 'How quickly can you fill a vacancy?',
-    a: 'Timelines vary by role and seniority, but for most positions we present a shortlist within 5–10 business days. For urgent or high-volume requirements, we can often move faster thanks to our active candidate pipeline.',
-  },
-];
+import { getWorkforceSolutionFAQs } from '../../services/workforceSolutionServices/workforceSolutionFAQService';
+import { getWorkforceSolutionCTA } from '../../services/workforceSolutionServices/workforceSolutionCTAService';
 
 export default function FAQAndCTA() {
   const [openIndex, setOpenIndex] = useState(null);
   const [ref, visible] = useScrollReveal();
+  const [faqs, setFaqs] = useState([]);
+  const [cta, setCTA] = useState(null);
+  const [isFAQLoading, setIsFAQLoading] = useState(true);
+  const [isCTALoading, setIsCTALoading] = useState(true);
+  const [faqError, setFaqError] = useState(null);
+  const [ctaError, setCtaError] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    // Fetch FAQs
+    const fetchFAQs = async () => {
+      setIsFAQLoading(true);
+      setFaqError(null);
+      try {
+        const data = await getWorkforceSolutionFAQs();
+        if (mounted) setFaqs(data);
+      } catch (error) {
+        if (mounted) setFaqError(error.message || 'Failed to load FAQs');
+      } finally {
+        if (mounted) setIsFAQLoading(false);
+      }
+    };
+
+    // Fetch CTA
+    const fetchCTA = async () => {
+      setIsCTALoading(true);
+      setCtaError(null);
+      try {
+        const data = await getWorkforceSolutionCTA();
+        if (mounted) setCTA(data);
+      } catch (error) {
+        if (mounted) setCtaError(error.message || 'Failed to load CTA');
+      } finally {
+        if (mounted) setIsCTALoading(false);
+      }
+    };
+
+    // Call both in parallel
+    fetchFAQs();
+    fetchCTA();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const toggle = (i) => setOpenIndex(openIndex === i ? null : i);
 
+  const faqContent = isFAQLoading ? (
+    <div className="space-y-4">
+      {[...Array(4)].map((_, index) => (
+        <div key={index} className="bg-white rounded-lg border border-gray-200 shadow-sm animate-pulse">
+          <div className="w-full px-6 py-4 flex items-center justify-between text-left">
+            <div className="h-5 bg-gray-200 rounded-full w-3/4" />
+            <div className="h-6 w-6 bg-gray-200 rounded-full" />
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : faqError ? (
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-8 text-center">
+      <p className="text-gray-500 text-sm">Failed to load FAQs.</p>
+    </div>
+  ) : !faqs.length ? (
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-8 text-center">
+      <p className="text-gray-500 text-sm">No FAQs available at the moment.</p>
+    </div>
+  ) : (
+    <div className="space-y-4">
+      {faqs.map((faq, index) => (
+        <div
+          key={faq._id || index}
+          className="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
+        >
+          <button
+            onClick={() => toggle(index)}
+            className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+          >
+            <span className="text-base font-semibold text-blue-900 pr-4">
+              {faq.question || 'Question not available'}
+            </span>
+            <ChevronDown
+              size={24}
+              className={`shrink-0 text-gray-400 transition-transform duration-300 ${
+                openIndex === index ? 'transform rotate-180' : ''
+              }`}
+            />
+          </button>
+
+          {openIndex === index && (
+            <div className="px-6 pb-4 text-gray-600 text-sm leading-relaxed border-t border-gray-200">
+              {faq.answer || 'Answer not available'}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+
+  const ctaContent = isCTALoading ? (
+    <div className="relative w-full rounded-3xl p-8 bg-gradient-to-br from-blue-700 to-blue-900 text-white shadow-2xl animate-pulse">
+      <div className="space-y-6 pr-4">
+        <div className="space-y-3">
+          <div className="h-10 bg-white/20 rounded-full w-5/6" />
+          <div className="h-4 bg-white/20 rounded-full w-full" />
+          <div className="h-4 bg-white/20 rounded-full w-4/5" />
+        </div>
+        <div className="h-12 bg-white/20 rounded-full w-40" />
+      </div>
+    </div>
+  ) : ctaError ? (
+    <div className="relative w-full rounded-3xl p-8 bg-gradient-to-br from-blue-700 to-blue-900 text-white shadow-2xl">
+      <p className="text-blue-100 text-sm">Failed to load CTA.</p>
+    </div>
+  ) : !cta ? (
+    <div className="relative w-full rounded-3xl p-8 bg-gradient-to-br from-blue-700 to-blue-900 text-white shadow-2xl">
+      <div className="space-y-6 pr-4">
+        <div className="space-y-3">
+          <h2 className="text-3xl sm:text-4xl font-bold leading-tight">Build Your Workforce</h2>
+          <p className="text-blue-100 text-sm leading-relaxed">
+            Call to action content is not available at the moment.
+          </p>
+        </div>
+        <button
+          disabled
+          className="inline-flex items-center gap-2 px-6 py-3 border-2 border-white text-white font-semibold rounded-full opacity-50 cursor-not-allowed"
+        >
+          Coming Soon
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+  ) : (
+    <div className="relative w-full bg-gradient-to-br from-blue-700 to-blue-900 rounded-3xl p-8 text-white shadow-2xl">
+      {/* Right side icons */}
+      <div className="absolute top-6 right-4 space-y-7">
+        <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-sm">
+          <Users size={24} className="text-blue-200" />
+        </div>
+        <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-sm">
+          <Globe size={24} className="text-blue-200" />
+        </div>
+        <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-sm">
+          <User size={24} className="text-blue-200" />
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="space-y-6 pr-4">
+        <div className="space-y-3">
+          <h2 className="text-3xl sm:text-4xl font-bold leading-tight">
+            {cta.ctaTitle || 'Build Your Workforce'}
+          </h2>
+          {cta.ctaDescription && (
+            <p className="text-blue-100 text-sm leading-relaxed">
+              {cta.ctaDescription}
+            </p>
+          )}
+        </div>
+
+        {cta.buttonText && (
+          <CTAButton link={cta.buttonLink} text={cta.buttonText} />
+        )}
+      </div>
+    </div>
+  );
+
   return (
-    <section id="faq" className="bg-bg-section py-16 md:py-20 px-4">
+    <section id="faq" className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-12">
       <div
         ref={ref}
-        className={`max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 items-start reveal ${visible ? 'visible' : ''}`}
+        className={`max-w-7xl mx-auto reveal ${visible ? 'visible' : ''}`}
       >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
+          {/* Left Section - FAQ */}
+          <div className="space-y-6">
+            <div className="text-sm font-semibold tracking-wide text-amber-500 uppercase">
+              Frequently Asked Questions
+            </div>
+            {faqContent}
+          </div>
 
-        {/* LEFT — FAQ */}
-        <div>
-          <p className="text-accent text-xs font-semibold tracking-widest uppercase mb-6">
-            Frequently Asked Questions
-          </p>
-          <div className="flex flex-col gap-3" role="list">
-            {faqs.map(({ q, a }, i) => {
-              const isOpen = openIndex === i;
-              const panelId = `faq-panel-${i}`;
-              const btnId = `faq-btn-${i}`;
-              return (
-                <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm" role="listitem">
-                  <button
-                    id={btnId}
-                    aria-expanded={isOpen}
-                    aria-controls={panelId}
-                    onClick={() => toggle(i)}
-                    className="w-full flex items-center justify-between px-5 py-4 text-left
-                               text-primary font-heading font-semibold text-sm gap-4
-                               hover:text-accent transition-colors duration-150"
-                  >
-                    <span>{q}</span>
-                    <span
-                      aria-hidden="true"
-                      className="shrink-0 w-7 h-7 rounded-full border border-gray-200
-                                 flex items-center justify-center text-accent"
-                    >
-                      {isOpen ? <FiX size={14} /> : <FiPlus size={14} />}
-                    </span>
-                  </button>
-                  {isOpen && (
-                    <div
-                      id={panelId}
-                      role="region"
-                      aria-labelledby={btnId}
-                      className="px-5 pb-4 text-text-body text-sm leading-relaxed border-t border-gray-100 pt-3"
-                    >
-                      {a}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+          {/* Right Section - CTA Card */}
+          <div className="flex items-center justify-center lg:justify-end">
+            {ctaContent}
           </div>
         </div>
-
-        {/* RIGHT — CTA Card */}
-        <div className="bg-primary rounded-2xl p-8 md:p-10 relative overflow-hidden flex flex-col gap-6">
-          <div className="absolute top-4 right-4 flex gap-3 opacity-10" aria-hidden="true">
-            <FiUsers size={40} className="text-white" />
-            <FiGlobe size={32} className="text-white" />
-            <FiZap size={24} className="text-white" />
-          </div>
-
-          <div className="flex flex-col gap-4 relative z-10">
-            <h3 className="font-heading font-bold text-2xl md:text-3xl text-white leading-snug">
-              Let's Build Your Workforce Together
-            </h3>
-            <p className="text-white/70 text-sm leading-relaxed">
-              Partner with E2E HRC and experience recruitment solutions that drive
-              growth, efficiency and long-term success.
-            </p>
-          </div>
-
-          <a
-            href="#"
-            className="self-start bg-white text-primary font-heading font-semibold text-sm
-                       px-6 py-3 rounded-pill hover:bg-accent hover:text-white
-                       transition-colors duration-200 relative z-10"
-          >
-            Submit a Vacancy →
-          </a>
-        </div>
-
       </div>
     </section>
+  );
+}
+
+// Helper component to handle link navigation
+function CTAButton({ link, text }) {
+  const isExternalLink = link && (link.startsWith('http://') || link.startsWith('https://'));
+
+  if (isExternalLink) {
+    return (
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 px-6 py-3 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-blue-900 transition-all duration-300 group"
+      >
+        {text}
+        <span className="transition-transform group-hover:translate-x-1">→</span>
+      </a>
+    );
+  }
+
+  if (link) {
+    return (
+      <a
+        href={link}
+        className="inline-flex items-center gap-2 px-6 py-3 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-blue-900 transition-all duration-300 group"
+      >
+        {text}
+        <span className="transition-transform group-hover:translate-x-1">→</span>
+      </a>
+    );
+  }
+
+  // If no link, render button without href
+  return (
+    <button
+      className="inline-flex items-center gap-2 px-6 py-3 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-blue-900 transition-all duration-300 group"
+    >
+      {text}
+      <span className="transition-transform group-hover:translate-x-1">→</span>
+    </button>
   );
 }

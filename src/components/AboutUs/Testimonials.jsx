@@ -1,43 +1,38 @@
 import { useEffect, useState, useRef } from "react";
 import { getTestimonials } from "../../services/aboutus/testimonialService";
-import fordLogo from "../../assets/images/Career Growth imgs/ford 1.png";
-import disneyLogo from "../../assets/images/Career Growth imgs/disnep1.png";
-
+import companyLogo from "../../assets/images/Career Growth imgs/global.png"
 const fallbackTestimonials = [
   {
     _id: "1",
     testimonialTitle: "Efficient and Effective Hiring Process!",
     review: "The efficiency of Applyfier's hiring process is commendable. The platform's intuitive interface, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
     companyName: "Ford",
-    logo: fordLogo,
   },
   {
     _id: "2",
     testimonialTitle: "Top-Notch Talent at Our Fingertips!",
     review: "As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
     companyName: "Disney",
-    logo: disneyLogo,
   },
   {
     _id: "3",
     testimonialTitle: "Top-Notch Talent at Our Fingertips!",
     review: "As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
-    companyName: "Disney",
-    logo: disneyLogo,
+    companyName: "Disney"
   },
   {
     _id: "4",
     testimonialTitle: "Efficient and Effective Hiring Process!",
     review: "The efficiency of Applyfier's hiring process is commendable. The platform's intuitive interface, combined with the customizable criteria for candidate ranking, makes it easy to identify the right fit for our company. It's a game-changer for businesses seeking quality hires.",
     companyName: "Ford",
-    logo: fordLogo,
+
   },
   {
     _id: "5",
     testimonialTitle: "Top-Notch Talent at Our Fingertips!",
     review: "As an employer, finding top-notch talent is crucial for our success. Applyfier has been our go-to platform for hiring. The automated candidate ranking system significantly simplified our hiring process, and we were able to connect with exceptional candidates who have become valuable assets to our team.",
     companyName: "Disney",
-    logo: disneyLogo,
+
   },
 ];
 
@@ -67,6 +62,7 @@ function TestimonialCard({ t }) {
         background: "#FFFFFF",
         borderRadius: 12,
         flexShrink: 0,
+        marginTop: 50,
       }}
     >
       {/* Inner bg */}
@@ -99,6 +95,7 @@ function TestimonialCard({ t }) {
           zIndex: 1,
         }}
       >
+
         <div style={{ display: "flex", flexDirection: "column", gap: 0, width: 368, height: 170 }}>
           <h3
             style={{
@@ -135,13 +132,34 @@ function TestimonialCard({ t }) {
             transform: "rotate(0.27deg)",
           }}
         />
-        {/* Logo */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: isFord ? "center" : "flex-start", width: "100%" }}>
-          {t.logo ? (
-            <img src={t.logo} alt={brand} style={{ height: 40, objectFit: "contain" }} />
-          ) : (
-            <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 600, fontSize: 16, color: "#2A2A2A" }}>{brand}</span>
-          )}
+              <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            width: "100%",
+          }}
+        >
+          <img
+            src={companyLogo}
+            alt="companyLogo"
+            style={{
+              width: 40,
+              height: 40,
+              objectFit: "contain",
+            }}
+          />
+
+          <span
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontWeight: 600,
+              fontSize: 16,
+              color: "#2A2A2A",
+            }}
+          >
+            {t.companyName}
+          </span>
         </div>
       </div>
     </div>

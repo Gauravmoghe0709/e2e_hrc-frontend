@@ -1,12 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getWhyChooseE2E } from "../../services/aboutus/whyChooseE2EService";
 import hiringImg from "../../assets/images/Career Growth imgs/hiring.jpg";
-import expertImg from "../../assets/images/Career Growth imgs/expert.png";
-import globalImg from "../../assets/images/Career Growth imgs/global.png";
-import complianceImg from "../../assets/images/Career Growth imgs/compliance 1.png";
-
-const DEFAULT_TITLE = "Why Choose E2E HRC?";
-const DEFAULT_DESC = "Delivering excellence through dedicated service and unparalleled market knowledge.";
 
 const getIcon = (type) => {
   const color = "#00458D";
@@ -53,21 +47,38 @@ const getIcon = (type) => {
 
 const WhyChooseUs = () => {
   const [items, setItems] = useState([]);
+  const [section, setSection] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     let mounted = true;
     const load = async () => {
       setIsLoading(true);
+      setError(false);
       try {
         const res = await getWhyChooseE2E();
-        const data = res?.data ?? [];
-        const active = (Array.isArray(data) ? data : [])
-          .filter((d) => d && (d.isActive === undefined ? true : d.isActive))
+        const data = res?.data ?? {};
+        
+        // Extract section and cards from response
+        const responseSection = data.section || null;
+        const responseCards = Array.isArray(data.cards) ? data.cards : [];
+        
+        // Filter active cards and sort by displayOrder
+        const active = responseCards
+          .filter((card) => card && (card.isActive === undefined ? true : card.isActive))
           .sort((a, b) => (Number(a.displayOrder || 0) - Number(b.displayOrder || 0)));
-        if (mounted) setItems(active);
-      } catch {
-        if (mounted) setItems([]);
+        
+        if (mounted) {
+          setSection(responseSection);
+          setItems(active);
+        }
+      } catch (err) {
+        if (mounted) {
+          setError(true);
+          setSection(null);
+          setItems([]);
+        }
       } finally {
         if (mounted) setIsLoading(false);
       }
@@ -76,18 +87,13 @@ const WhyChooseUs = () => {
     return () => { mounted = false; };
   }, []);
 
-  const headerTitle = items[0]?.sectionTitle || DEFAULT_TITLE;
-  const headerDesc = items[0]?.sectionDescription || DEFAULT_DESC;
+  // Return nothing if loading or error or no items
+  if (isLoading || error || !items || items.length === 0) {
+    return null;
+  }
 
-  const iconTypes = ["globe", "shield", "check", "bolt", "wrench"];
-
-  const cards = [
-    { id: 1, title: "Industry Expertise", desc: "In-depth knowledge across multiple sectors ensures we understand your specific technical and cultural requirements.", icon: "globe", imgSrc: expertImg, w: "404px", h: "244px", left: "0px", right: null, top: "0px", dir: "column", pad: "32px", descH: "96px" },
-    { id: 2, title: "Global Talent Network", desc: "Access to a vast, pre-vetted pool of skilled professionals not just locally, but from across the globe.", icon: "shield", imgSrc: globalImg, w: null, h: "244px", left: "428px", right: "428px", top: "0px", dir: "column", pad: "32px 32px 56px", descH: "72px" },
-    { id: 3, title: "Compliance Focused", desc: "Strict adherence to legal and ethical recruitment standards, mitigating risk for your business.", icon: "check", imgSrc: complianceImg, w: null, h: "244px", left: "856px", right: "0px", top: "0px", dir: "column", pad: "32px 32px 56px", descH: "72px" },
-    { id: 4, title: "Fast & Efficient Hiring", desc: "Streamlined processes and agile methodologies designed to save you time and cost without compromising on quality.", icon: "bolt", w: null, h: "230px", left: "0px", right: "428px", top: "278px", dir: "row", pad: "32px", descH: "48px", hasImage: true },
-    { id: 5, title: "Dedicated Account Managers", desc: "Personalised support throughout your entire recruitment journey, acting as an extension of your team.", icon: "wrench", w: null, h: "230px", left: "856px", right: "0px", top: "278px", dir: "column", pad: "32px", descH: "72px" },
-  ];
+  const headerTitle = section?.sectionTitle || "Why Choose E2E HRC?";
+  const headerDesc = section?.sectionDescription || "Delivering excellence through dedicated service and unparalleled market knowledge.";
 
   return (
     <section
@@ -166,100 +172,121 @@ const WhyChooseUs = () => {
             top: "128px",
           }}
         >
-          {cards.map((card) => (
-            <div
-              key={card.id}
-              style={{
-                position: "absolute",
-                ...(card.w ? { width: card.w } : {}),
-                height: card.h,
-                left: card.left,
-                ...(card.right ? { right: card.right } : {}),
-                top: card.top,
-                background: "#FFFFFF",
-                border: "1px solid #C9DB82",
-                borderRadius: "24px",
-                padding: card.pad,
-                display: "flex",
-                flexDirection: card.dir,
-                alignItems: "flex-start",
-                gap: card.dir === "row" ? "32px" : "12px",
-                boxSizing: "border-box",
-              }}
-            >
+          {items.map((card, index) => {
+            // Calculate positions based on index
+            const row = Math.floor(index / 3);
+            const col = index % 3;
+            const topPos = row * 278;
+            const leftPos = col * 428;
+            
+            // Determine if this is a multi-column card (first card in first row is wider)
+            const isFirstCard = index === 0;
+            const width = isFirstCard ? "404px" : null;
+            const height = row === 0 ? "244px" : "230px";
+            const right = col === 2 ? "0px" : null;
+            const flexDir = index === 3 ? "row" : "column";
+            const hasImage = index === 3;
+            const padding = hasImage ? "32px" : (col === 1 || col === 2) ? "32px 32px 56px" : "32px";
+            
+            return (
               <div
+                key={card._id || index}
                 style={{
+                  position: "absolute",
+                  ...(width ? { width } : {}),
+                  height,
+                  left: `${leftPos}px`,
+                  ...(right ? { right } : {}),
+                  top: `${topPos}px`,
+                  background: "#FFFFFF",
+                  border: "1px solid #C9DB82",
+                  borderRadius: "24px",
+                  padding,
                   display: "flex",
-                  flexDirection: "column",
+                  flexDirection: flexDir,
                   alignItems: "flex-start",
-                  gap: "12px",
-                  ...(card.dir === "row" ? { width: "459.11px", height: "124px", flexShrink: 0 } : {}),
+                  gap: flexDir === "row" ? "32px" : "12px",
+                  boxSizing: "border-box",
                 }}
               >
-                <div style={{ width: card.imgSrc ? "28.52px" : card.icon === "globe" ? "28.52px" : card.icon === "wrench" ? "30px" : "30px", height: card.imgSrc ? "30px" : card.icon === "bolt" ? "24px" : card.icon === "wrench" ? "27px" : "30px" }}>
-                  {card.imgSrc ? (
-                    <img src={card.imgSrc} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-                  ) : (
-                    getIcon(card.icon)
-                  )}
-                </div>
-                <div style={{ width: card.dir === "row" ? "459.11px" : "338px", height: "28px", paddingTop: "4px" }}>
-                  <h3
-                    style={{
-                      margin: 0,
-                      fontFamily: "Poppins, sans-serif",
-                      fontWeight: 600,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      color: "#0F172A",
-                    }}
-                  >
-                    {card.title}
-                  </h3>
-                </div>
-                <div style={{ width: card.dir === "row" ? "459.11px" : "338px", height: card.descH }}>
-                  <p
-                    style={{
-                      margin: 0,
-                      fontFamily: "Inter, sans-serif",
-                      fontWeight: 400,
-                      fontSize: "16px",
-                      lineHeight: "24px",
-                      color: "#424752",
-                    }}
-                  >
-                    {card.desc}
-                  </p>
-                </div>
-              </div>
-              {card.hasImage && (
                 <div
                   style={{
-                    width: "245.55px",
-                    height: "160px",
-                    borderRadius: "12px",
-                    overflow: "hidden",
-                    background: "#ECEEF0",
                     display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    gap: "12px",
+                    ...(flexDir === "row" ? { width: "459.11px", height: "124px", flexShrink: 0 } : {}),
                   }}
                 >
-                  <img
-                    src={hiringImg}
-                    alt="Fast Hiring"
+                  <div style={{ width: card.image ? "28.52px" : "30px", height: card.image ? "30px" : "30px" }}>
+                    {card.image ? (
+                      <img 
+                        src={card.image} 
+                        alt={card.title || "Card icon"} 
+                        style={{ width: "100%", height: "100%", objectFit: "contain" }} 
+                      />
+                    ) : (
+                      getIcon(index)
+                    )}
+                  </div>
+                  <div style={{ width: flexDir === "row" ? "459.11px" : "338px", height: "28px", paddingTop: "4px" }}>
+                    <h3
+                      style={{
+                        margin: 0,
+                        fontFamily: "Poppins, sans-serif",
+                        fontWeight: 600,
+                        fontSize: "16px",
+                        lineHeight: "24px",
+                        color: "#0F172A",
+                      }}
+                    >
+                      {card.title || ""}
+                    </h3>
+                  </div>
+                  <div style={{ width: flexDir === "row" ? "459.11px" : "338px", height: hasImage ? "48px" : ((col === 1 || col === 2) && row === 0) ? "72px" : "96px" }}>
+                    <p
+                      style={{
+                        margin: 0,
+                        fontFamily: "Inter, sans-serif",
+                        fontWeight: 400,
+                        fontSize: "16px",
+                        lineHeight: "24px",
+                        color: "#424752",
+                      }}
+                    >
+                      {card.description || ""}
+                    </p>
+                  </div>
+                </div>
+                {hasImage && (
+                  <div
                     style={{
                       width: "245.55px",
                       height: "160px",
-                      objectFit: "cover",
-                      opacity: 0.8,
+                      borderRadius: "12px",
+                      overflow: "hidden",
+                      background: "#ECEEF0",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
                     }}
-                  />
-                </div>
-              )}
-            </div>
-          ))}
+                  >
+                    <img
+                      src={hiringImg}
+                      alt="Card image"
+                      style={{
+                        width: "245.55px",
+                        height: "160px",
+                        objectFit: "cover",
+                        opacity: 0.8,
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

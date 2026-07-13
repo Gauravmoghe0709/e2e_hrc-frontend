@@ -1,94 +1,23 @@
 import { useEffect, useState } from "react";
 import { getEmployerHowWeWorkSteps } from "../../services/employer/howWeWorkService";
-import discoveryIcon from "../../assets/images/Career Growth imgs/DISCOVERY.png";
-
-const stepIcons = [
-  <img key="discovery" src={discoveryIcon} alt="Discovery" style={{ width: 66, height: 55, objectFit: "contain" }} />,
-  // Requirement Planning - clipboard
-  <svg key="requirement" width="66" height="55" viewBox="0 0 66 55" fill="none">
-    <rect x="12" y="8" width="42" height="44" rx="4" stroke="#2B2B2F" strokeWidth="3" />
-    <line x1="22" y1="22" x2="44" y2="22" stroke="#2B2B2F" strokeWidth="2.5" strokeLinecap="round" />
-    <line x1="22" y1="32" x2="38" y2="32" stroke="#2B2B2F" strokeWidth="2.5" strokeLinecap="round" />
-    <line x1="22" y1="42" x2="32" y2="42" stroke="#2B2B2F" strokeWidth="2.5" strokeLinecap="round" />
-  </svg>,
-  // Candidate Search - people with search
-  <svg key="search" width="66" height="55" viewBox="0 0 66 55" fill="none">
-    <circle cx="24" cy="18" r="8" stroke="#2B2B2F" strokeWidth="2.5" />
-    <circle cx="44" cy="18" r="6" stroke="#2B2B2F" strokeWidth="2" />
-    <path d="M10 48C10 38 16 32 24 32C28 32 30 33 32 35" stroke="#2B2B2F" strokeWidth="2.5" strokeLinecap="round" />
-    <path d="M36 48C36 40 40 36 44 36C48 36 50 38 52 40" stroke="#2B2B2F" strokeWidth="2" strokeLinecap="round" />
-  </svg>,
-  // Shortlisting - checklist with checkmarks
-  <svg key="shortlist" width="66" height="55" viewBox="0 0 66 55" fill="none">
-    <rect x="10" y="6" width="46" height="42" rx="4" stroke="#2B2B2F" strokeWidth="2.5" />
-    <polyline points="20,20 26,26 36,16" stroke="#2B2B2F" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-    <polyline points="20,34 26,40 36,30" stroke="#2B2B2F" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-    <line x1="40" y1="22" x2="50" y2="22" stroke="#2B2B2F" strokeWidth="2" strokeLinecap="round" />
-    <line x1="40" y1="36" x2="50" y2="36" stroke="#2B2B2F" strokeWidth="2" strokeLinecap="round" />
-  </svg>,
-  // Interview Support - two people talking
-  <svg key="interview" width="66" height="55" viewBox="0 0 66 55" fill="none">
-    <circle cx="22" cy="16" r="8" stroke="#2B2B2F" strokeWidth="2.5" />
-    <circle cx="46" cy="16" r="7" stroke="#2B2B2F" strokeWidth="2.5" />
-    <path d="M8 46C8 36 14 30 22 30C26 30 28 31 30 33" stroke="#2B2B2F" strokeWidth="2.5" strokeLinecap="round" />
-    <path d="M34 46C34 38 38 34 46 34C50 34 52 35 54 37" stroke="#2B2B2F" strokeWidth="2.5" strokeLinecap="round" />
-    <rect x="30" y="10" width="12" height="8" rx="3" stroke="#2B2B2F" strokeWidth="2" />
-  </svg>,
-  // Successful Hire - handshake
-  <svg key="hire" width="66" height="55" viewBox="0 0 66 55" fill="none">
-    <path d="M8 28L18 18L28 28L38 18L48 28L58 18" stroke="#2B2B2F" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M18 32L26 40L42 24" stroke="#2B2B2F" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-    <circle cx="33" cy="46" r="4" stroke="#2B2B2F" strokeWidth="2" />
-  </svg>,
-];
-
-const defaultSteps = [
-  {
-    _id: "1",
-    title: "Discovery",
-    description: "Understanding your business, culture, and requirements.",
-    order: 1,
-  },
-  {
-    _id: "2",
-    title: "Requirement Planning",
-    description: "Defining the ideal candidate profile and timeline.",
-    order: 2,
-  },
-  {
-    _id: "3",
-    title: "Candidate Search",
-    description: "Active headhunting across our talent network.",
-    order: 3,
-  },
-  {
-    _id: "4",
-    title: "Shortlisting",
-    description: "Presenting only the best-matched candidates.",
-    order: 4,
-  },
-  {
-    _id: "5",
-    title: "Interview Support",
-    description: "Full coordination and coaching throughout.",
-    order: 5,
-  },
-  {
-    _id: "6",
-    title: "Successful Hire",
-    description: "Placement, onboarding support, and follow-up.",
-    order: 6,
-  },
-];
 
 function HowWeWorkSkeleton() {
   return (
-    <section style={{ position: "relative", width: 1440, height: 860, overflow: "hidden", background: "rgba(201,219,130,0.1)" }}>
-      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div className="animate-pulse text-center">
-          <div className="h-5 bg-gray-200 rounded-full w-48 mx-auto mb-4" />
-          <div className="h-10 bg-gray-200 rounded-full w-72 mx-auto" />
-        </div>
+    <section className="relative w-full bg-[linear-gradient(135deg,#F0D7A4_0%,#E9C65C_25%,#D8AE32_50%,#F4E4C3_75%,#F7F3EA_100%)] py-16 px-6 md:px-16 overflow-hidden">
+      <div className="relative z-10 text-center mb-14 animate-pulse">
+        <div className="h-5 bg-gray-200 rounded-full w-48 mx-auto mb-4" />
+        <div className="h-10 md:h-12 bg-gray-200 rounded-full w-72 mx-auto" />
+      </div>
+      <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-14 max-w-5xl mx-auto text-center">
+        {[...Array(6)].map((_, index) => (
+          <div key={index} className="flex flex-col items-center px-4">
+            <div className="relative w-16 h-16 mb-4">
+              <div className="absolute inset-0 bg-gray-200 rounded-md" />
+            </div>
+            <div className="h-5 bg-gray-200 rounded-full w-32 mb-3" />
+            <div className="h-4 bg-gray-200 rounded-full w-40" />
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -96,17 +25,13 @@ function HowWeWorkSkeleton() {
 
 function HowWeWorkFallback({ message = "The How We Work section is currently unavailable. Please check back later." }) {
   return (
-    <section style={{ position: "relative", width: "100%", maxWidth: 1440, height: 860, margin: "0 auto", overflow: "hidden", background: "rgba(201,219,130,0.1)" }}>
-      <div style={{ position: "relative", zIndex: 10, textAlign: "center", paddingTop: 80 }}>
-        <p style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: 20, lineHeight: "30px", letterSpacing: 1, textTransform: "uppercase", color: "#7A777E", textAlign: "center" }}>
-          From brief to successful hire
-        </p>
-        <h2 style={{ fontFamily: "Poppins, sans-serif", fontWeight: 800, fontSize: 36, lineHeight: "50px", letterSpacing: -1, color: "#2B2B2F", textAlign: "center", marginTop: 0 }}>
-          How We Work
-        </h2>
-        <div style={{ maxWidth: 600, margin: "60px auto", padding: 40, background: "rgba(255,255,255,0.8)", borderRadius: 16 }}>
-          <p style={{ fontFamily: "Inter, sans-serif", fontSize: 16, color: "#7A777E" }}>{message}</p>
-        </div>
+    <section className="relative w-full bg-[linear-gradient(135deg,#F0D7A4_0%,#E9C65C_25%,#D8AE32_50%,#F4E4C3_75%,#F7F3EA_100%)] py-16 px-6 md:px-16 overflow-hidden">
+      <div className="relative z-10 text-center mb-14">
+        <p className="text-gray-700 tracking-widest text-sm font-semibold mb-2">HOW WE WORK</p>
+        <h2 className="text-3xl md:text-4xl font-extrabold text-brand-navy">How We Work</h2>
+      </div>
+      <div className="relative z-10 max-w-3xl mx-auto rounded-3xl bg-white/80 p-10 text-center shadow-lg">
+        <p className="text-gray-700">{message}</p>
       </div>
     </section>
   );
@@ -117,11 +42,18 @@ export default function HowWeWork() {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
+  const staticSection = {
+    badgeText: "HOW WE WORK",
+    sectionTitle: "How We Work",
+    sectionDescription: "",
+  };
+
   useEffect(() => {
     const loadSteps = async () => {
       try {
         const response = await getEmployerHowWeWorkSteps();
         const payload = response?.data || response;
+
         if (Array.isArray(payload) && payload.length > 0) {
           setSteps(payload);
         } else {
@@ -134,196 +66,38 @@ export default function HowWeWork() {
         setIsLoading(false);
       }
     };
+
     loadSteps();
   }, []);
 
   if (isLoading) return <HowWeWorkSkeleton />;
   if (hasError) return <HowWeWorkFallback />;
-  const displaySteps = steps.length > 0 ? steps : defaultSteps;
+  if (steps.length === 0) return <HowWeWorkFallback message="No active How We Work steps are available yet." />;
 
   return (
-    <section className="how-we-work-section">
-      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 1220, margin: "0 auto", padding: "0 15px", boxSizing: "border-box" }}>
-        {/* Header */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            padding: "0 15px",
-            marginBottom: 30,
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "Inter, sans-serif",
-              fontWeight: 500,
-              fontSize: 20,
-              lineHeight: "30px",
-              letterSpacing: 1,
-              textTransform: "uppercase",
-              color: "#7A777E",
-              textAlign: "center",
-              margin: "0 0 8px",
-            }}
-          >
-            From brief to successful hire
-          </p>
-          <h2
-            style={{
-              fontFamily: "Poppins, sans-serif",
-              fontWeight: 800,
-              fontSize: 36,
-              lineHeight: "50px",
-              letterSpacing: -1,
-              color: "#2B2B2F",
-              textAlign: "center",
-              margin: 0,
-            }}
-          >
-            How We Work
-          </h2>
-        </div>
-
-        {/* 3x2 Grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            position: "relative",
-          }}
-        >
-          {displaySteps.slice(0, 6).map((step, index) => {
-            const isTopRow = index < 3;
-            const col = index % 3;
-
-            return (
-              <div
-                key={step._id || `${step.title}-${index}`}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  padding: isTopRow ? "0 0 17px" : "17px 0",
-                  gap: 17,
-                  borderRight: col < 2 ? "1px solid rgba(0,0,0,0.1)" : "none",
-                  borderBottom: isTopRow ? "none" : "none",
-                  boxSizing: "border-box",
-                }}
-              >
-                {/* Icon container */}
-                <div
-                  style={{
-                    position: "relative",
-                    width: 144.53,
-                    height: 144.53,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  {/* Rotated green shape */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      width: 120,
-                      height: 60,
-                      background: "#71DF14",
-                      opacity: 0.12,
-                      transform: index % 2 === 0 ? "rotate(-40deg)" : "rotate(140deg)",
-                      left: "50%",
-                      top: "50%",
-                      marginLeft: -60,
-                      marginTop: -30,
-                    }}
-                  />
-                  {/* Circular icon container */}
-                  <div
-                    style={{
-                      position: "relative",
-                      width: 120,
-                      height: 120,
-                      borderRadius: 60,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      zIndex: 1,
-                    }}
-                  >
-                    {stepIcons[index] || stepIcons[0]}
-                  </div>
-                </div>
-
-                {/* Text content */}
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                    padding: "0 10px",
-                    width: "100%",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <h3
-                    style={{
-                      fontFamily: "Poppins, sans-serif",
-                      fontWeight: 600,
-                      fontSize: 24,
-                      lineHeight: "22px",
-                      color: "#2B2B2F",
-                      textAlign: "center",
-                      width: "100%",
-                      margin: "0 0 8px",
-                    }}
-                  >
-                    {step.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontWeight: 500,
-                      fontSize: 18,
-                      lineHeight: "34px",
-                      textAlign: "center",
-                      color: "#7A777E",
-                      margin: 0,
-                      width: "100%",
-                    }}
-                  >
-                    {step.description}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+    <section className="relative w-full bg-[linear-gradient(135deg,#F0D7A4_0%,#E9C65C_25%,#D8AE32_50%,#F4E4C3_75%,#F7F3EA_100%)] py-16 px-6 md:px-16 overflow-hidden">
+      <div className="relative z-10 text-center mb-14">
+        {staticSection.badgeText && (
+          <p className="text-gray-700 tracking-widest text-sm font-semibold mb-2">{staticSection.badgeText}</p>
+        )}
+        <h2 className="text-3xl md:text-4xl font-extrabold text-brand-navy">{staticSection.sectionTitle}</h2>
+        {staticSection.sectionDescription && (
+          <p className="mx-auto mt-4 max-w-3xl text-base md:text-lg text-gray-700">{staticSection.sectionDescription}</p>
+        )}
       </div>
 
-      <style>{`
-        .how-we-work-section {
-          position: relative;
-          background: linear-gradient(135deg, #fdf3e0 0%, #f9dfa0 30%, #f0b84f 55%, #f5d99a 75%, #fdf3e0 100%);
-          overflow: hidden;
-          padding: 80px 40px;
-        }
-        .how-we-work-section::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background:
-            radial-gradient(ellipse 600px 400px at 20% 30%, rgba(255,255,255,0.5), transparent 60%),
-            radial-gradient(ellipse 500px 350px at 80% 70%, rgba(240,180,80,0.4), transparent 60%),
-            linear-gradient(120deg, transparent 40%, rgba(255,255,255,0.35) 48%, transparent 56%),
-            linear-gradient(115deg, transparent 55%, rgba(255,200,120,0.3) 62%, transparent 70%);
-          filter: blur(20px);
-          pointer-events: none;
-        }
-        .how-we-work-section > * {
-          position: relative;
-          z-index: 1;
-        }
-      `}</style>
+      <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-14 max-w-5xl mx-auto text-center">
+        {steps.map((step, index) => (
+          <div key={step._id || `${step.title}-${index}`} className="flex flex-col items-center px-4">
+            <div className="relative w-16 h-16 flex items-center justify-center mb-4">
+              <div className="absolute inset-0 bg-brand-green/40 rotate-45 rounded-md" />
+              <span className="relative z-10 text-brand-navy font-bold text-xl">{String(step.order || index + 1).padStart(2, '0')}</span>
+            </div>
+            <h3 className="text-lg font-bold text-brand-navy mb-2">{step.title}</h3>
+            <p className="text-sm text-gray-700 max-w-55">{step.description}</p>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }
