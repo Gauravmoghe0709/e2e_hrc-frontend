@@ -10,68 +10,167 @@ const BridgingGap = () => {
       try {
         const response = await getAboutInfo();
         setSectionData(response?.data || null);
-      } catch (error) {
-        console.error("Failed to load Bridging the Gap section", error);
+      } catch {
+        // use defaults
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
   if (loading) {
     return (
-      <section className="px-6 md:px-16 py-16 bg-white">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-          <div className="h-96 w-full rounded-2xl bg-slate-100 animate-pulse" />
-          <div className="space-y-4">
-            <div className="h-4 w-32 rounded bg-slate-200 animate-pulse" />
-            <div className="h-10 w-full rounded bg-slate-200 animate-pulse" />
-            <div className="h-20 w-full rounded bg-slate-200 animate-pulse" />
-          </div>
+      <section style={{ width: "100%", maxWidth: "1440px", margin: "0 auto", padding: "60px 113.5px", background: "#FFFFFF", fontFamily: "'Inter', sans-serif", boxSizing: "border-box" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px", width: "100%" }}>
+          <div style={{ width: "200px", height: "20px", background: "#E2E8F0", borderRadius: "4px" }} />
+          <div style={{ width: "100%", height: "40px", background: "#E2E8F0", borderRadius: "4px" }} />
+          <div style={{ width: "100%", height: "80px", background: "#E2E8F0", borderRadius: "4px" }} />
         </div>
       </section>
     );
   }
 
-  if (!sectionData || sectionData.isActive === false) {
-    return null;
-  }
-
-  const features = [sectionData.feature1, sectionData.feature2, sectionData.feature3].filter(
-    (item) => item && item.toString().trim() !== ""
-  );
+  const heading = sectionData?.heading || "Bridging the Gap Between Ambition and Achievement";
+  const description = sectionData?.description || "Since our inception, E2E HRC has been more than just a matching service. We are strategic growth partners. We specialize in deep-market intelligence, identifying the unique DNA of organizations and the professionals who can lead them into the next decade.";
+  const features = [
+    sectionData?.feature1 || "Personalized consultancy that prioritizes culture and fit.",
+    sectionData?.feature2 || "Unrivaled access to passive talent pools globally.",
+    sectionData?.feature3 || "Data-driven screening processes for precision matching.",
+  ].filter((f) => f && f.toString().trim() !== "");
 
   return (
-    <section className="px-6 md:px-16 py-16 bg-white">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-        <div className="relative">
-          <div className="rounded-2xl overflow-hidden shadow-xl">
+    <section
+      style={{
+        width: "100%",
+        maxWidth: "1440px",
+        margin: "0 auto",
+        padding: "60px 113.5px",
+        background: "#FFFFFF",
+        fontFamily: "'Inter', sans-serif",
+        boxSizing: "border-box",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "flex-start",
+          gap: "60px",
+          width: "100%",
+          maxWidth: "1250px",
+          margin: "0 auto",
+        }}
+      >
+        {/* Left side - Image */}
+        <div
+          style={{
+            width: "500px",
+            flexShrink: 0,
+          }}
+        >
+          <div
+            style={{
+              width: "500px",
+              height: "420px",
+              borderRadius: "24px",
+              overflow: "hidden",
+              boxShadow: "0px 4px 20px rgba(0,0,0,0.06)",
+              border: "1px solid rgba(194,198,212,0.2)",
+            }}
+          >
             <img
-              src={sectionData.image || "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80"}
-              alt={sectionData.heading || "Bridging the Gap section"}
-              className="w-full h-96 object-cover"
+              src={sectionData?.image || "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80"}
+              alt="Bridging the Gap"
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
             />
           </div>
         </div>
 
-        <div>
-          <h2 className="text-3xl font-bold text-slate-900 mb-5 leading-snug">
-            {sectionData.heading}
+        {/* Right side - Content */}
+        <div
+          style={{
+            flex: "1",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            gap: "20px",
+            minWidth: 0,
+          }}
+        >
+          {/* Heading */}
+          <h2
+            style={{
+              margin: 0,
+              fontFamily: "Poppins, sans-serif",
+              fontWeight: 800,
+              fontSize: "36px",
+              lineHeight: "48px",
+              letterSpacing: "-0.48px",
+              color: "#191C1E",
+            }}
+          >
+            {heading}
           </h2>
-          <p className="text-slate-500 leading-relaxed mb-6">{sectionData.description}</p>
 
-          {features.length > 0 && (
-            <ul className="space-y-4">
-              {features.map((feature, index) => (
-                <li key={`${feature}-${index}`} className="flex items-start gap-3">
-                  <span className="mt-1 w-3 h-3 bg-blue-800 rounded-sm shrink-0" />
-                  <span className="text-slate-700">{feature}</span>
-                </li>
-              ))}
-            </ul>
-          )}
+          {/* Blue underline */}
+          <div style={{ width: "64px", height: "4px", background: "#00458D" }} />
+
+          {/* Description */}
+          <p
+            style={{
+              margin: 0,
+              fontFamily: "Inter, sans-serif",
+              fontWeight: 400,
+              fontSize: "18px",
+              lineHeight: "28px",
+              color: "#424752",
+              marginTop: "8px",
+            }}
+          >
+            {description}
+          </p>
+
+          {/* Feature bullets */}
+          <ul
+            style={{
+              margin: 0,
+              padding: 0,
+              listStyle: "none",
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+              marginTop: "8px",
+            }}
+          >
+            {features.map((feature, index) => (
+              <li
+                key={index}
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "12px",
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 400,
+                  fontSize: "18px",
+                  lineHeight: "28px",
+                  color: "#424752",
+                }}
+              >
+                <span
+                  style={{
+                    flexShrink: 0,
+                    width: "8px",
+                    height: "8px",
+                    marginTop: "10px",
+                    background: "#00458D",
+                    borderRadius: "2px",
+                  }}
+                />
+                {feature}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

@@ -1,67 +1,197 @@
-import { FiArrowRight, FiBriefcase } from 'react-icons/fi';
+import icon1 from '../../assets/images/Career Growth imgs/icon 1.png';
+import icon2 from '../../assets/images/Career Growth imgs/icon 2.png';
+
+const cardsData = [
+  {
+    id: "employer",
+    badge: { icon: icon1, label: "For Employers" },
+    heading: {
+      line1: "Find Your",
+      line2: { accent: "Next Star", rest: "Hire" },
+      baseColor: "#FFFFFF",
+      accentColor: "#F39308",
+    },
+    description:
+      "Tailored recruitment and workforce solutions designed to help you build high-performing teams across every sector.",
+    descriptionColor: "#FFFFFF",
+    bg: "#C9DB82",
+    left: 55,
+    contentLeft: 84,
+    buttonLeft: 541,
+  },
+  {
+    id: "employee",
+    badge: { icon: icon2, label: "For Employee" },
+    heading: {
+      line1: "Discover Your",
+      line2: { accent: "Dream", rest: "Career" },
+      baseColor: "#004CA5",
+      accentColor: "#F39308",
+    },
+    description:
+      "Explore opportunities that match your skills, experience and ambitions. We connect you with employers who value your potential.",
+    descriptionColor: "#004CA5",
+    bg: "#FFFFFF",
+    left: 735,
+    contentLeft: 764,
+    buttonLeft: 1221,
+  },
+];
+
+const ArrowIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+    <path
+      d="M3.125 7.5H11.875M11.875 7.5L7.5 3.125M11.875 7.5L7.5 11.875"
+      stroke="#FFFFFF"
+      strokeWidth="1.25"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
 export default function EmployerCandidateSection() {
   return (
-    <section className="py-16 md:py-20 px-4 bg-[#F8FAFC]">
-      <div className="mx-auto flex justify-center">
-        <div className="flex flex-col lg:flex-row lg:w-[1330px] lg:h-[334px]">
-          {/* LEFT CARD - Olive */}
-          <div
-            className="relative flex flex-col justify-center rounded-2xl lg:rounded-none lg:rounded-l-2xl px-10 lg:pl-[84px] lg:pr-10 py-10 lg:w-[650px] lg:h-[334px]"
-            style={{ background: '#C9DB82' }}
-          >
-            <span className="inline-flex items-center gap-2 bg-white text-[#004CA5] text-xs font-semibold px-4 py-2 rounded-full border border-[#F39308] w-max mb-5">
-              <FiBriefcase size={14} className="text-[#004CA5]" />
-              For Employers
-            </span>
+    <section
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        padding: "0px 32px 29px 55px",
+        width: "100%",
+        maxWidth: 1440,
+        height: 398,
+        margin: "0 auto",
+        boxSizing: "border-box",
+        background: "#FFFFFF",
+      }}
+    >
+      <div style={{ position: "relative", width: 1330, height: 334 }}>
+        {cardsData.map((card) => (
+          <div key={card.id}>
+            {/* Card background */}
+            <div
+              style={{
+                position: "absolute",
+                width: 650,
+                height: 334,
+                left: card.left,
+                top: 0,
+                background: card.bg,
+                ...(card.id === "employee"
+                  ? { border: "1px solid #FFFFFF", boxSizing: "border-box" }
+                  : {}),
+              }}
+            />
 
-            <h2 className="font-heading font-bold text-[36px] leading-[1.1] text-white">
-              Find Your<br />
-              <span className="text-[#F39308]">Next Star</span>{' '}
-              <span className="text-white">Hire</span>
+            {/* Badge */}
+            <div
+              style={{
+                position: "absolute",
+                left: card.contentLeft,
+                top: 47.74,
+                display: "flex",
+                alignItems: "center",
+                padding: "6px 12px",
+                gap: 8,
+                background: "#FFFFFF",
+                border: "0.8px solid #F39308",
+                borderRadius: 9999,
+                boxSizing: "border-box",
+              }}
+            >
+              <img
+                src={card.badge.icon}
+                alt=""
+                style={{ width: 14, height: 14, display: "block" }}
+              />
+              <span
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 600,
+                  fontSize: 12,
+                  lineHeight: "16px",
+                  color: "#004CA5",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {card.badge.label}
+              </span>
+            </div>
+
+            {/* Heading */}
+            <h2
+              style={{
+                position: "absolute",
+                left: card.contentLeft,
+                top: 86,
+                fontFamily: "Poppins, sans-serif",
+                fontWeight: 700,
+                fontSize: 36,
+                lineHeight: "45px",
+                color: card.heading.baseColor,
+                margin: 0,
+              }}
+            >
+              {card.heading.line1}
+              <br />
+              <span style={{ color: card.heading.accentColor }}>
+                {card.heading.line2.accent}
+              </span>{" "}
+              <span style={{ color: card.heading.baseColor }}>
+                {card.heading.line2.rest}
+              </span>
             </h2>
 
-            <p className="text-white/90 text-sm leading-relaxed max-w-md mt-2">
-              Tailored recruitment and workforce solutions designed to help you build high-performing teams across every sector.
+            {/* Description */}
+            <p
+              style={{
+                position: "absolute",
+                left: card.contentLeft,
+                top: 195.77,
+                width: 519,
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 400,
+                fontSize: 16,
+                lineHeight: "26px",
+                color: card.descriptionColor,
+                margin: 0,
+              }}
+            >
+              {card.description}
             </p>
 
+            {/* Explore button */}
             <a
               href="#"
-              className="self-end mt-4 inline-flex items-center gap-2 bg-[#F39308] text-white font-semibold text-sm px-6 py-3 rounded-[999px] hover:bg-[#E07D00] transition-colors duration-200"
+              style={{
+                position: "absolute",
+                left: card.buttonLeft,
+                top: 267,
+                display: "flex",
+                alignItems: "center",
+                padding: "12px 24px",
+                gap: 8,
+                background: "#F39308",
+                borderRadius: 9999,
+                textDecoration: "none",
+              }}
             >
-              Explore
-              <FiArrowRight size={16} />
+              <span
+                style={{
+                  fontFamily: "Poppins, sans-serif",
+                  fontWeight: 600,
+                  fontSize: 14,
+                  lineHeight: "20px",
+                  color: "#FFFFFF",
+                }}
+              >
+                Explore
+              </span>
+              <ArrowIcon />
             </a>
           </div>
-
-          {/* RIGHT CARD - White */}
-          <div
-            className="relative flex flex-col justify-center rounded-2xl lg:rounded-none lg:rounded-r-2xl px-10 lg:pl-[84px] lg:pr-10 py-10 lg:w-[650px] lg:h-[334px] bg-white border border-gray-200 shadow-sm"
-          >
-            <span className="inline-flex items-center gap-2 bg-white text-[#004CA5] text-xs font-semibold px-4 py-2 rounded-full border border-[#F39308] w-max mb-5">
-              <FiBriefcase size={14} className="text-[#004CA5]" />
-              For Employee
-            </span>
-
-            <h2 className="font-heading font-bold text-[36px] leading-[1.1] text-[#004CA5]">
-              Discover Your<br />
-              <span className="text-[#004CA5]">Dream </span>
-              <span className="text-[#F39308]">Career</span>
-            </h2>
-
-            <p className="text-[#004CA5]/80 text-sm leading-relaxed max-w-md mt-2">
-              Explore opportunities that match your skills, experience and ambitions. We connect you with employers who value your potential.
-            </p>
-
-            <a
-              href="#"
-              className="self-end mt-4 inline-flex items-center gap-2 bg-[#F39308] text-white font-semibold text-sm px-6 py-3 rounded-[999px] hover:bg-[#E07D00] transition-colors duration-200"
-            >
-              Explore
-              <FiArrowRight size={16} />
-            </a>
-          </div>
-        </div>
+        ))}
       </div>
     </section>
   );

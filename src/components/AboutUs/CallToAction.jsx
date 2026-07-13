@@ -1,4 +1,6 @@
 import React from "react";
+import submitImg from "../../assets/images/Career Growth imgs/submit.png";
+import uploadImg from "../../assets/images/Career Growth imgs/upload.png";
 
 const CallToAction = () => {
   return (
@@ -14,10 +16,12 @@ const CallToAction = () => {
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <button className="bg-orange-500 hover:bg-orange-600 transition-colors text-white font-medium px-6 py-3 rounded-full flex items-center gap-2">
-            Submit a Vacancy 📋
+            Submit a Vacancy
+            <img src={submitImg} alt="" style={{ width: "13.33px", height: "16.67px" }} />
           </button>
           <button className="border border-white/40 hover:bg-white/10 transition-colors text-white font-medium px-6 py-3 rounded-full flex items-center gap-2">
-            Upload CV 📤
+            Upload CV
+            <img src={uploadImg} alt="" style={{ width: "13.33px", height: "16.67px" }} />
           </button>
         </div>
       </div>

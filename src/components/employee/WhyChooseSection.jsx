@@ -23,7 +23,7 @@ const rows = [
     textWidth: '790px',
     textPadEyebrow: '36px',
     textPad: '1px 40px 40px 50px',
-    titleWidth: '277px',
+    titleWidth: '160px',
     statsPadTop: '20px',
   },
   {

@@ -7,9 +7,10 @@ const About = lazy(() => import("../pages/AboutUsPage"));
 const Employer = lazy(() => import("../pages/Employer"));
 const WorkforceSolution = lazy(() => import("../pages/WorkforceSolution"));
 const Employee = lazy(() => import("../pages/employee"));
-const BecomePartner = lazy(() => import("../pages/BecomePartner"));
-const Blog = lazy(() => import("../pages/Blogs"));
-const ContactUs = lazy(() => import("../pages/ContactUs"));
+const Becomepartner = lazy(()=>import("../pages/BecomePartner"))
+const Blogs = lazy (()=>import("../pages/Blogs"))
+const Contact = lazy(()=>import("../pages/ContactUs"))
+
 const Approuter = () => {
   return (
     <Suspense fallback={<Loading />}>
@@ -19,9 +20,9 @@ const Approuter = () => {
         <Route path="/workforce-solutions" element={<WorkforceSolution />} />
         <Route path="/employer" element={<Employer />} />
         <Route path="/employee" element={<Employee />} />
-        <Route path="/become-partner" element={<BecomePartner />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/Become-partner" element={<Becomepartner />} />
+         <Route path="/blogs" element={<Blogs />} />
+         <Route path="/contact" element={<Contact />} />
       </Routes>
     </Suspense>
 

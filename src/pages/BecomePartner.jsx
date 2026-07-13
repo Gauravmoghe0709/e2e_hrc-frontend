@@ -1,18 +1,18 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import BecomePartnerHero from '../components/becomePartner/BecomePartnerHero';
-import PartnershipContactSection from '../components/becomePartner/PartnershipContactSection';
-import BuiltOnTrustSection from '../components/becomePartner/BuiltOnTrustSection';
-import RecruitmentNetworkSection from '../components/becomePartner/RecruitmentNetworkSection';
+import HeroSection from '../components/becomepartner/HeroSection';
+import PartnerFormSection from '../components/becomepartner/PartnerFormSection';
+import BuiltOnTrustSection from '../components/becomepartner/BuiltOnTrustSection';
+import NetworkMapSection from '../components/becomepartner/NetworkMapSection';
 
 export default function BecomePartner() {
   return (
-    <div className="min-h-screen overflow-x-hidden bg-white">
-      <Navbar variant="partner" />
-      <BecomePartnerHero />
-      <PartnershipContactSection />
+    <div className="min-h-screen bg-white overflow-x-hidden">
+      <Navbar />
+      <HeroSection />
+      <PartnerFormSection />
       <BuiltOnTrustSection />
-      <RecruitmentNetworkSection />
+      <NetworkMapSection />
       <Footer />
     </div>
   );

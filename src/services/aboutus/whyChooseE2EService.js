@@ -13,7 +13,9 @@ export const getWhyChooseE2E = async () => {
     const res = await axios.get(`${API_BASE}/about/why-choose`);
     return normalize(res);
   } catch (err) {
-    if (err.response && err.response.status === 404) return { data: [] };
+    if (err.response && err.response.status === 404) {
+      return { data: { section: null, cards: [] } };
+    }
     throw err;
   }
 };

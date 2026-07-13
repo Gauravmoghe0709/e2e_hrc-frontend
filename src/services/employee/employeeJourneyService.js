@@ -32,4 +32,3 @@ export const getEmployeeJourney = async () => {
 export default {
   getEmployeeJourney,
 };
-

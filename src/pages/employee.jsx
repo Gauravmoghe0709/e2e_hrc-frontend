@@ -17,8 +17,6 @@ import sectorIT from '../assets/images/sectors/it technology.jpg';
 import sectorLogistics from '../assets/images/sectors/logistics.jpg';
 import sectorManufacturing from '../assets/images/sectors/manuifacturing.jpg';
 import FAQAndCTA from '../components/employee/FAQSection';
-import union from "../assets/Union.png"
-import ford from "../assets/disnep1.png"
 
 const testimonialsData = [
   {

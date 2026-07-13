@@ -1,6 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+
+import manufacturingImg from "../../assets/images/sectors/manuifacturing.jpg";
+import healthcareImg from "../../assets/images/sectors/healthcare.jpg";
+import engineeringImg from "../../assets/images/sectors/engineering.jpg";
+import constructionImg from "../../assets/images/sectors/construction.jpg";
+import logisticsImg from "../../assets/images/sectors/logistics.jpg";
+import financeImg from "../../assets/images/sectors/finance.jpg";
+import educationImg from "../../assets/images/sectors/education.jpg";
+
+const fallbackIndustries = [
+  { name: "Manufacturing", image: manufacturingImg, description: "Tailored recruitment solutions for this sector." },
+  { name: "Healthcare", image: healthcareImg, description: "Tailored recruitment solutions for this sector." },
+  { name: "Engineering", image: engineeringImg, description: "Tailored recruitment solutions for this sector." },
+  { name: "Construction", image: constructionImg, description: "Tailored recruitment solutions for this sector." },
+  { name: "Logistics", image: logisticsImg, description: "Tailored recruitment solutions for this sector." },
+  { name: "Finance", image: financeImg, description: "Tailored recruitment solutions for this sector." },
+  { name: "Education", image: educationImg, description: "Tailored recruitment solutions for this sector." },
+];
 
 const normalizeServices = (services = []) => {
   return [...services]
@@ -16,7 +34,7 @@ function Sectors() {
   const scrollRef = useRef(null);
   const [services, setServices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -28,12 +46,17 @@ function Sectors() {
       try {
         const response = await axios.get("/api/services");
         if (isMounted) {
-          setServices(normalizeServices(response?.data?.data || []));
+          const apiServices = normalizeServices(response?.data?.data || []);
+          if (apiServices.length > 0) {
+            setServices(apiServices);
+          } else {
+            setServices(fallbackIndustries);
+          }
         }
       } catch (err) {
         if (isMounted) {
           setError(err);
-          setServices([]);
+          setServices(fallbackIndustries);
         }
       } finally {
         if (isMounted) {
@@ -50,109 +73,94 @@ function Sectors() {
   }, []);
 
   const scrollLeft = () => {
-    scrollRef.current?.scrollBy({
-      left: -350,
-      behavior: "smooth",
-    });
+    const el = scrollRef.current;
+    if (el) {
+      const amount = el.clientWidth * 0.5;
+      el.scrollBy({ left: -amount, behavior: "smooth" });
+    }
   };
 
   const scrollRight = () => {
-    scrollRef.current?.scrollBy({
-      left: 350,
-      behavior: "smooth",
-    });
+    const el = scrollRef.current;
+    if (el) {
+      const amount = el.clientWidth * 0.5;
+      el.scrollBy({ left: amount, behavior: "smooth" });
+    }
   };
 
   return (
-    <section className="bg-[#f4f7fb]">
-      <div className="mx-auto max-w-375 px-6 py-20 sm:px-10 lg:px-14">
-        <span className="rounded-full bg-[#C6D86D] px-4 py-2 text-sm font-bold text-blue-700">
-          Industries We Serve
-        </span>
-
-        <div className="mt-6 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <h2 className="text-3xl font-bold text-blue-700 sm:text-4xl lg:text-5xl">
-            Deep expertise across 25+ sectors
-          </h2>
-
-          {!isLoading && services.length > 0 && (
-            <div className="flex gap-4">
-              <button
-                onClick={scrollLeft}
-                aria-label="Scroll services left"
-                className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-blue-700 text-blue-700 transition hover:bg-blue-700 hover:text-white"
-              >
-                <ChevronLeft size={24} />
-              </button>
-
-              <button
-                onClick={scrollRight}
-                aria-label="Scroll services right"
-                className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-blue-700 text-blue-700 transition hover:bg-blue-700 hover:text-white"
-              >
-                <ChevronRight size={24} />
-              </button>
-            </div>
-          )}
+    <section className="py-10 lg:py-20 px-4 bg-white">
+      <div className="max-w-[1440px] mx-auto">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-8 lg:mb-10 lg:pl-[51px] lg:pr-[32px] gap-4">
+          <div className="lg:w-[629.76px]">
+            <span className="inline-flex items-center bg-[#C8D96F] text-[#004CA5] font-body font-semibold text-[12px] px-3 py-[6px] rounded-full mb-2">
+              Industries We Serve
+            </span>
+            <h2 className="font-heading font-[800] text-2xl sm:text-3xl lg:text-[36px] lg:leading-[40px] tracking-[0px] text-[#004CA5]">
+              Deep expertise across 25+ sectors
+            </h2>
+          </div>
+          <div className="hidden sm:flex items-center gap-[8px] lg:w-[96px]">
+            <button
+              onClick={scrollLeft}
+              className="w-[44px] h-[44px] rounded-full border-[1.6px] border-[#004CA5] bg-transparent flex items-center justify-center hover:bg-gray-50 transition-colors"
+              aria-label="Scroll left"
+            >
+              <FiChevronLeft size={18} strokeWidth={1.5} className="text-[#004CA5]" />
+            </button>
+            <button
+              onClick={scrollRight}
+              className="w-[44px] h-[44px] rounded-full border-[1.6px] border-[#004CA5] bg-transparent flex items-center justify-center hover:bg-gray-50 transition-colors"
+              aria-label="Scroll right"
+            >
+              <FiChevronRight size={18} strokeWidth={1.5} className="text-[#004CA5]" />
+            </button>
+          </div>
         </div>
 
         {isLoading ? (
-          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div className="flex gap-6 overflow-hidden pb-4 -mx-4 px-4">
             {[1, 2, 3].map((item) => (
               <div
                 key={item}
-                className="h-90 animate-pulse overflow-hidden rounded-3xl bg-white shadow-sm"
-              >
-                <div className="h-full w-full bg-linear-to-br from-slate-200 to-slate-100" />
-              </div>
+                className="w-[280px] min-w-[280px] h-[420px] rounded-[20px] overflow-hidden animate-pulse bg-gray-200 shadow-[0px_4px_20px_0px_#00000014]"
+              />
             ))}
-          </div>
-        ) : error ? (
-          <div className="mt-12 rounded-3xl border border-dashed border-blue-200 bg-white p-8 text-center shadow-sm">
-            <h3 className="text-xl font-semibold text-blue-700">Services are temporarily unavailable</h3>
-            <p className="mt-2 text-sm text-gray-600">
-              Please check back soon for the latest service offerings.
-            </p>
-          </div>
-        ) : services.length === 0 ? (
-          <div className="mt-12 rounded-3xl border border-dashed border-blue-200 bg-white p-8 text-center text-gray-600 shadow-sm">
-            No services available.
           </div>
         ) : (
           <div
             ref={scrollRef}
-            className="mt-12 flex gap-6 overflow-x-auto scroll-smooth pb-2 no-scrollbar"
+            className="flex gap-6 overflow-x-auto no-scrollbar pb-4 -mx-4 px-4 snap-x snap-mandatory"
           >
-            {services.map((service) => (
-              <div
-                key={service._id || service.title}
-                className="group relative min-w-70 max-w-77.5 flex-1 overflow-hidden rounded-3xl shadow-sm sm:min-w-77.5"
-              >
-                <div className="h-102.5 w-full">
-                  {service.image ? (
+            {services.map((service, index) => {
+              const name = service.name || service.title;
+              const image = service.image || fallbackIndustries[index % fallbackIndustries.length]?.image;
+
+              return (
+                <div
+                  key={service._id || service.id || name}
+                  className="group relative w-[280px] h-[420px] min-w-[280px] rounded-[20px] overflow-hidden cursor-pointer snap-start bg-transparent shadow-[0px_4px_20px_0px_#00000014]"
+                >
+                  {image ? (
                     <img
-                      src={service.image}
-                      alt={service.title}
-                      className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-110 bg-[linear-gradient(0deg,rgba(0,15,40,0.9)_30%,rgba(0,15,40,0.35)_100%)];"
+                      src={image}
+                      alt={name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-[#0f4c81] via-[#2b6cb0] to-[#77c0f4] text-center text-sm font-semibold text-white">
-                      {service.title}
+                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#004CA5] via-[#2b6cb0] to-[#77c0f4] text-center text-sm font-semibold text-white">
+                      {name}
                     </div>
                   )}
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(0deg, rgba(0, 15, 40, 0.9) 30%, rgba(0, 15, 40, 0.35) 100%)" }} />
+                  <div className="absolute left-0 top-0 w-[280px] h-[420px] flex flex-col justify-end items-start p-7">
+                    <div className="w-[224px] pb-2">
+                      <h3 className="font-heading font-bold text-[20px] leading-[28px] text-white">{name}</h3>
+                    </div>
+                  </div>
                 </div>
-
-                <div className="absolute inset-0 bg-black/45 transition duration-300 group-hover:bg-black/65" />
-
-                <div className="absolute bottom-8 left-6 right-6 text-white transition-all duration-300">
-                  <h3 className="text-2xl font-extrabold">{service.title}</h3>
-
-                  <p className="mt-4 text-sm leading-6 text-white/90 opacity-0 transition-all duration-300 group-hover:opacity-100">
-                    {service.shortDescription || "Tailored recruitment solutions for this sector."}
-                  </p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

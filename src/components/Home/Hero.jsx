@@ -1,6 +1,41 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import heroImgPlaceholder from "../../assets/images/hero.png";
 import { getHeroData } from "../../services/heroService";
+
+function useCountUp(target, duration, delay = 0) {
+  const [count, setCount] = useState(0);
+  const [done, setDone] = useState(false);
+  const rafRef = useRef(null);
+
+  useEffect(() => {
+    let startTime = null;
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      const animate = (timestamp) => {
+        if (cancelled) return;
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setCount(Math.floor(eased * target));
+        if (progress < 1) {
+          rafRef.current = requestAnimationFrame(animate);
+        } else {
+          setDone(true);
+        }
+      };
+      rafRef.current = requestAnimationFrame(animate);
+    }, delay);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [target, duration, delay]);
+
+  return { count, done };
+}
 
 function HeroSkeleton() {
   return (
@@ -36,6 +71,45 @@ function HeroFallback() {
         <p className="text-gray-500 text-sm">Hero content is currently unavailable. Please try again later.</p>
       </div>
     </section>
+  );
+}
+
+function AnimatedStat({ target, suffix = "+", label, containerWidth, duration = 1500, delay = 0 }) {
+  const { count, done } = useCountUp(target, duration, delay);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), delay);
+    return () => clearTimeout(t);
+  }, [delay]);
+
+  return (
+    <div style={{
+      display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
+      padding: "0px 0px 24px", width: containerWidth, height: "72px",
+      opacity: visible ? 1 : 0,
+      transform: visible ? "translateY(0)" : "translateY(10px)",
+      transition: "opacity 0.4s ease-out, transform 0.4s ease-out",
+    }}>
+      <span style={{
+        fontFamily: "Inter, sans-serif", fontWeight: 800, fontSize: "28px", lineHeight: "32px",
+        color: "#004CA5", display: "flex", alignItems: "center", height: "32px",
+        marginLeft: "-64px",
+        transform: done ? "scale(1.12)" : "scale(1)",
+        transition: "transform 0.3s ease-out",
+      }}>
+        {count}{suffix}
+      </span>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0px", width: containerWidth, height: "16px" }}>
+        <span style={{
+          fontFamily: "Inter, sans-serif", fontWeight: 500, fontSize: "12px", lineHeight: "16px",
+          display: "flex", alignItems: "center", letterSpacing: "0.5px",
+          textTransform: "uppercase", color: "#43474F",
+        }}>
+          {label}
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -79,7 +153,7 @@ function Hero() {
           <div style={{ position: "absolute", width: "519px", height: "519px", left: "calc(50% - 519px/2 - 18px)", top: "calc(50% - 519px/2 - 54.5px)", background: "#C2D760", opacity: 0.33, borderRadius: "9999px" }} />
           <div style={{ position: "absolute", width: "419px", height: "419px", left: "calc(50% - 419px/2)", top: "calc(50% - 419px/2 - 40.5px)", boxSizing: "border-box", border: "1px dashed #C2D760", borderRadius: "9999px" }} />
 
-          <div style={{ position: "absolute", width: "697px", left: "calc(50% - 697px/2)", top: "0", bottom: "14.16%" }}>
+          <div style={{ position: "absolute", width: "697px", left: "calc(50% - 697px/2 - 40px)", top: "0", bottom: "14.16%" }}>
             {!imgLoaded && (
               <div className="absolute inset-0 bg-gray-100 animate-pulse rounded-2xl" />
             )}
@@ -102,7 +176,7 @@ function Hero() {
           <div style={{ display: "flex", flexDirection: "row", alignItems: "center", padding: "4px 12px", gap: "6px", width: "291.94px", height: "24px", background: "#C9DB82", borderRadius: "9999px", flex: "none", order: 0 }}>
             <div style={{ width: "12px", height: "12px", borderRadius: "9999px", background: "#166534", flex: "none", order: 0 }} />
             <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 600, fontSize: "12px", lineHeight: "16px", color: "#166534", flex: "none", order: 1 }}>
-              {heroData.title || "Connecting Talent. Building Futures."}
+              Connecting Talent. Building Futures.
             </span>
           </div>
 
@@ -168,19 +242,21 @@ function Hero() {
           {/* Stats */}
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "0px 3px 8px", gap: "10px", width: "632px", height: "95px", borderTop: "1px solid #F3F4F6", flex: "none", order: 4, boxSizing: "border-box" }}>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-start", padding: "0px", gap: "24px", width: "576.25px", height: "70px" }}>
+              <AnimatedStat target={100} suffix="+" label="CLIENTS" containerWidth="96px" duration={800} delay={100} />
+              <AnimatedStat target={100} suffix="+" label="CANDIDATES" containerWidth="131px" duration={800} delay={250} />
               {[
-                { value: "0+", label: "CLIENTS" },
-                { value: "0+", label: "CANDIDATES" },
-                { value: "25+", label: "YEARS OF EXPERIENCE" },
-                { value: "4", label: "OFFICES" },
+                { number: "25+", label: "YEARS OF EXPERIENCE", containerWidth: "138.62px" },
+                { number: "4", label: "OFFICES", containerWidth: "138.62px" },
               ].map((stat) => (
-                <div key={stat.label} style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "0px 0px 24px", width: stat.label === "CLIENTS" ? "96px" : "138.62px", height: "72px" }}>
-                  <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 700, fontSize: "24px", lineHeight: "32px", color: "#004CA5" }}>
-                    {stat.value}
+                <div key={stat.label} style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "0px 0px 24px", width: stat.containerWidth, height: "72px" }}>
+                  <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 700, fontSize: "24px", lineHeight: "32px", color: "#004CA5", display: "flex", alignItems: "center", height: "32px", marginLeft: "-64px" }}>
+                    {stat.number}
                   </span>
-                  <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 400, fontSize: "12px", lineHeight: "16px", letterSpacing: "0.3px", textTransform: "uppercase", color: "#000000", marginTop: "8px" }}>
-                    {stat.label}
-                  </span>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", padding: "0px", width: stat.containerWidth, height: "16px" }}>
+                    <span style={{ fontFamily: "Inter, sans-serif", fontStyle: "normal", fontWeight: 400, fontSize: "12px", lineHeight: "16px", display: "flex", alignItems: "center", letterSpacing: "0.3px", textTransform: "uppercase", color: "#000000" }}>
+                      {stat.label}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
