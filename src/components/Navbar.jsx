@@ -13,15 +13,9 @@ function Navbar() {
     { name: "Employer", path: "/employer" },
     { name: "Workforce Solutions", path: "/workforce-solutions" },
     { name: "Employee", path: "/employee" },
-<<<<<<< HEAD
-    { name: "Become a Partner", path: "/become-partner" },
-    { name: "Blogs", path: "/blog" },
-    { name: "Contact Us", path: "/contact-us" },
-=======
     { name: "Become a Partner", path: "/Become-partner" },
     { name: "Blogs", path: "/blogs" },
     { name: "Contact Us", path: "/contact" },
->>>>>>> frontend-updates
   ];
 
   const linkClass = ({ isActive }) =>

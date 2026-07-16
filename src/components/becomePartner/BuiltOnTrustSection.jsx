@@ -1,6 +1,6 @@
 ﻿import { FiGlobe, FiHome, FiLayers } from 'react-icons/fi';
 
-import trustPhoto from '../../assets/background coonecting reqrirment/build on trust.jpg';
+import trustPhoto from '../../assets/images/background coonecting reqrirment/build on trust.jpg';
 
 const checkItems = [
   {
